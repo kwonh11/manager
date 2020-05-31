@@ -1,0 +1,45 @@
+{
+  "name": "management",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "npx webpack && serve -s dist"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@material-ui/core": "^4.9.14",
+    "@material-ui/icons": "^4.9.1",
+    "@material-ui/lab": "^4.0.0-alpha.54",
+    "clsx": "^1.1.0",
+    "googleapis": "^51.0.0",
+    "jwt-decode": "^2.2.0",
+    "material-table": "^1.58.0",
+    "mui-datatables": "^2.14.0",
+    "prop-types": "^15.7.2",
+    "qs": "^6.9.4",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "react-google-login": "^5.1.20",
+    "react-router-dom": "^5.2.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.9.6",
+    "@babel/preset-env": "^7.9.6",
+    "@babel/preset-react": "^7.9.4",
+    "babel-loader": "^8.1.0",
+    "css-loader": "^3.5.3",
+    "file-loader": "^6.0.0",
+    "style-loader": "^1.2.1",
+    "url-loader": "^4.1.0",
+    "clean-webpack-plugin": "^3.0.0",
+    "html-webpack-plugin": "^4.3.0",
+    "webpack": "^4.43.0",
+    "webpack-cli": "^3.3.11"
+  },
+  "browserslist": [
+    "defaults"
+  ]
+}
