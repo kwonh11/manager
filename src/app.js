@@ -28,8 +28,8 @@ export default function App() {
     },[id_token , localToken]);
     return (
         <React.Fragment>
-            <UserContext.Provider value={profile}>          {/* 유저 프로필 컨텍스트 */}
-            <LogoutContext.Provider value={setProfile}>   {/* 로그아웃 이벤트 컨텍스트 */}
+            <UserContext.Provider value={profile}>          {/* 유저 프로필 컨텍스트    */}
+            <LogoutContext.Provider value={setProfile}>   {/* 로그아웃 이벤트 컨텍스트    */}
             <CssBaseline/>
                 <BrowserRouter>
                     <Nav/>
