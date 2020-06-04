@@ -36,12 +36,12 @@ export default function App({match}) {
             <LogoutContext.Provider value={setProfile}>   {/* 로그아웃 이벤트 컨텍스트    */}
             <ProfileContext.Provider value={profile}>     {/* 프로필 컨텍스트  */}
             <CssBaseline/>
-                <BrowserRouter>
+                <BrowserRouter basename='/manager'>
                     <Nav/>
                     <Switch>
-                        <Route exact path={`${match.url}/`} component={Home}></Route>
-                        <Route path={`${match.url}/board`} component={Board}></Route>
-                        <Route path={`${match.url}/management`} component={Management}></Route>
+                        <Route exact path='/' component={Home}></Route>
+                        <Route path='/board' component={Board}></Route>
+                        <Route path='/management' component={Management}></Route>
                     </Switch>
                 </BrowserRouter>
             <Footer/>
