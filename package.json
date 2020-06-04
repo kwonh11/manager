@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "npx webpack && serve -s dist"
+    "test": "npx webpack && serve -s dist",
+    "predeploy": "npx webpack",
+    "deploy": "gh-pages -d dist"
   },
   "keywords": [],
   "author": "",
@@ -29,16 +31,18 @@
     "@babel/preset-env": "^7.9.6",
     "@babel/preset-react": "^7.9.4",
     "babel-loader": "^8.1.0",
+    "clean-webpack-plugin": "^3.0.0",
     "css-loader": "^3.5.3",
     "file-loader": "^6.0.0",
+    "gh-pages": "^3.0.0",
+    "html-webpack-plugin": "^4.3.0",
     "style-loader": "^1.2.1",
     "url-loader": "^4.1.0",
-    "clean-webpack-plugin": "^3.0.0",
-    "html-webpack-plugin": "^4.3.0",
     "webpack": "^4.43.0",
     "webpack-cli": "^3.3.11"
   },
   "browserslist": [
     "defaults"
-  ]
+  ],
+  "homepage": "http://kwonh11.github.io/manager"
 }

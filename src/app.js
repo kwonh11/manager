@@ -13,10 +13,11 @@ export const UserContext = React.createContext();
 export const LogoutContext = React.createContext();
 export const ProfileContext = React.createContext();
 
-export default function App() {
+export default function App({match}) {
     const [ profile , setProfile ] = React.useState();
     const { id_token } = qs.parse(window.location.hash.substr(1));
     const localToken = localStorage.getItem('token');
+    console.log(match.url)
     React.useEffect(()=>{
         if (id_token) {
             localStorage.setItem('token' , id_token);
@@ -38,9 +39,9 @@ export default function App() {
                 <BrowserRouter>
                     <Nav/>
                     <Switch>
-                        <Route exact path="/" component={Home}></Route>
-                        <Route path="/board" component={Board}></Route>
-                        <Route path="/management" component={Management}></Route>
+                        <Route exact path={`${match.url}/`} component={Home}></Route>
+                        <Route path={`${match.url}/board`} component={Board}></Route>
+                        <Route path={`${match.url}/management`} component={Management}></Route>
                     </Switch>
                 </BrowserRouter>
             <Footer/>
