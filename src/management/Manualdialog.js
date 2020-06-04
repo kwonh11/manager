@@ -6,8 +6,6 @@ import {Dialog,
     ListItemText,
     Box,
     makeStyles} from '@material-ui/core';
-
-
 const useStyle = makeStyles(theme => {
     icon : {
         width : '3vw'

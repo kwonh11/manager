@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "npx webpack && serve -s dist",
-    "build" : "npx webpack --mode=production"
+    "predeploy": "npx webpack --mode production",
+    "build" : "npx webpack",
+    "deploy": "gh-pages -d dist"
   },
   "keywords": [],
   "author": "",
@@ -42,5 +44,6 @@
   },
   "browserslist": [
     "defaults"
-  ]
+  ],
+  "homepage": "http://kwonh11.github.io/manager"
 }
