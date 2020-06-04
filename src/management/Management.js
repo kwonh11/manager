@@ -3,6 +3,7 @@ import {Box} from '@material-ui/core'
 import {Snackbar} from '@material-ui/core';
 import Alert from '@material-ui/lab/Alert';
 import ManualDialog from "./ManualDialog";
+import { options,localization } from "./options";
 
 // useEffect로 data, columns 가 변경될 때마다 서버에 저장 후 갱신
 // ./util 경로에 로직 작성
@@ -13,15 +14,13 @@ import ManualDialog from "./ManualDialog";
 
 
 export default function ManagementTable() {
-  const [snack, setSnack] = React.useState({
-      open : false
-  })
-  const [dialog, setDialog] = React.useState({
-      open : false,
-  })
+  const [snack, setSnack] = React.useState({open : false})
+  const [dialog, setDialog] = React.useState({open : false})
+
   React.useEffect(()=>{ // 최초렌더링시 도움말 Snack 출력
-    setTimeout(()=>{setSnack({open:true})},500);
+    setTimeout(()=>{setSnack({open:true})},400);
   },[]);
+
   React.useEffect(() => {   // window 더블클릭 이벤트 추가, 도움말 open
     const ondbClick = () => setDialog({open : !dialog.open});
     window.addEventListener('dblclick', ondbClick);
@@ -30,7 +29,7 @@ export default function ManagementTable() {
   };
 }, []);
 
-  const [state, setState] = React.useState({
+  const [state, setState] = React.useState({  // 최초 API로 받아오는 동작필요
     columns: [
       { title: 'Name', field: 'name' , grouping:false},
       { title: 'Surname', field: 'surname' },
@@ -54,29 +53,7 @@ export default function ManagementTable() {
       { name: 'Johnson', surname: 'Johnson', birthYear: 1990, phone:'01046509895' ,gender: 2 , memo:''},
     ],
   });
-
-  const Margin = () => (<Box style={{height:'100px'}}></Box>);
-
-  const options= {
-    exportButton: true,
-    grouping:true,
-    selection:true,
-    headerStyle:{ 
-        fontWeight:'bolder',
-    },
-    actionsColumnIndex:-1,  // 액션 아이콘위치
-    columnsButton : true,   // 
-    debounceInterval : 160, // 로딩시간
-    pageSize : 20,          // 페이지사이즈
-    pageSizeOptions : [5, 10, 20, 50, 100], // 페이즈 사이즈 종류
-  }
-  const localization = {
-    pagination : { labelDisplayedRows : '{count} rows | {from}-{to}' , },
-    toolbar: {nRowsSelected: '{0} row(s) selected'},
-    header: {actions: 'Edit'},
-    body: {emptyDataSourceMessage: 'No record to display.. Click the [+] button on the right-top',}
-  }
-
+  const Margin = () => (<Box style={{height:'100px'}}></Box>);  // 여백
   const handleClose = (event, reason) => {
     setSnack({open: false });
   };

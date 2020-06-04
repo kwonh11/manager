@@ -9,7 +9,6 @@ import {Toolbar} from '@material-ui/core';
 import HideOnSchroll from "../util/HideOnSchroll";
 import SideMenuList from "./SideMenuList";
 import { UserContext } from "../app";
-import { Avatar } from "@material-ui/core";
 import SignOutButton from "./SignOutButton";
 
 const useStyles = makeStyles((theme) => ({
@@ -41,9 +40,6 @@ export default function Nav (props) {
     });
     const classes = useStyles();
     const toggleDrawer = (anchor, open) => (event) => {
-        if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
-            return;
-        }
         setState({ ...state, [anchor]: open });
     };
     const profile = React.useContext(UserContext);
@@ -56,12 +52,12 @@ export default function Nav (props) {
         <HideOnSchroll {...props}>
         <Appbar color='inherit' style={{boxShadow:'none'}}>
             <Toolbar>
-        <Grid container spacing={2}>
+        <Grid container spacing={3}>
             <Grid container className={classes.root}>
-                <Grid item spacing={2} className={classes.left}>
-                    <Link to='/' exact style={{textDecoration : 'none'}}><Button variant='outlined'> Home </Button></Link>
+                <Grid item className={classes.left}>
+                    <Link to='/' style={{textDecoration : 'none'}}><Button variant='outlined'> Home </Button></Link>
                     {links.map((link) => (
-                        <Link to={`/${link}`} style={{textDecoration : 'none'}}><Button variant='outlined'> {link} </Button></Link>
+                        <Link to={`/${link}`} style={{textDecoration : 'none'}} key={link}><Button variant='outlined'> {link} </Button></Link>
                     ))}
                 </Grid>
                 <Grid item className={classes.center}><span></span></Grid>
@@ -70,7 +66,7 @@ export default function Nav (props) {
                         {anchor}
                     </Button>
                     {LogoutBtn}
-                    <Drawer anchor={anchor} open={state[anchor]} onClose={toggleDrawer(anchor, false)}>
+                    <Drawer open={state[anchor]} onClose={toggleDrawer(anchor, false)}>
                         {SideMenuList( {...props, anchor ,toggleDrawer , profile} )}
                     </Drawer>
                 </Grid>

@@ -77,5 +77,5 @@ module.exports = {
             React : 'react',
         })
     ],
-    mode : 'production',
+    mode : 'development',
 }

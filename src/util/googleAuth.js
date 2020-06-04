@@ -20,6 +20,7 @@ const querystr = qs.stringify({
       .substring(2, 15),
 })
 
+// URL export
 export default AUTHORIZE_URI + "?" + querystr;
 
 

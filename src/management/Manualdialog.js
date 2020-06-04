@@ -33,9 +33,9 @@ export default function ManualDialog (props) {
         <DialogTitle> BASIC MANUAL </DialogTitle>
         <List>
             {
-                icons.map((icon) => {
+                icons.map((icon, index) => {
                     return (
-                    <ListItem>
+                    <ListItem key={`${icon} + ${index}`}>
                             <Box component='span' className={`material-icons ${classes.icon}`} style={{width:'3vw'}}>
                                 {icon.icon}
                             </Box>

@@ -4,8 +4,6 @@ import { makeStyles } from "@material-ui/core/styles";
 import SignInButton from './SignInButton';
 import googleSignin from '../buttonImage/googleSignin.png';
 import loginUrl from '../util/googleAuth';
-import SignOutButton from "./SignOutButton";
-
 
 const useStyles = makeStyles(theme => ({
     list : {
@@ -81,7 +79,6 @@ export default function MenuList ({anchor , toggleDrawer, profile}) {
             (<ListItem button className={classes.listItem} onClick={()=>handleOnClickLogin(loginUrl)}>
                 <SignInButton signIn={googleSignin}/>
             </ListItem>)}
-            <SignOutButton className={classes.listItem}/>
           </List>
       </div>
     )

@@ -1,12 +1,13 @@
 import { makeStyles } from '@material-ui/core/styles';
-import { Typography } from "@material-ui/core";
+import { Typography, Box } from "@material-ui/core";
 import wood2 from "../background/wood2.jpg";
 import { Fade } from "@material-ui/core";
+import StartButton from "./StartButton";
 
 const useStyles = makeStyles((theme) => ({
     root: {
         display: 'flex',
-        flexDirection:'row',
+        flexDirection:'column',
         flexWrap: 'wrap',
         justifyContent: 'center',
         alignContent : 'center',
@@ -20,6 +21,7 @@ export default function Main () {
     const [fade,setFade] = React.useState(false);
     const isFirstRef = React.useRef(true);
     const domRef = React.useRef();
+
     React.useEffect(() => {
         const observer = new IntersectionObserver(entries => {
             entries.forEach(entry => setFade(entry.isIntersecting));
@@ -30,14 +32,16 @@ export default function Main () {
       observer.observe(domRef.current);
       return () => observer.unobserve(domRef.current);
     }, []);
+
     return (
-        <Fade in={fade} timeout={{enter:2000, exit:1000}}>
-            <div className={classes.root} ref={domRef}>
+        <Fade in={fade} timeout={{enter:1300, exit:800}}>
+            <Box className={classes.root} ref={domRef}>
                 <Typography variant='h1' color='textSecondary'> 
-                    {isFirstRef.current? 'WELCOME!!' : 'Ready to start?'}
+                    {isFirstRef.current ? 'WELCOME!!' : 'Ready to start?'}
                 </Typography>
+                    {isFirstRef.current? null : (<StartButton/>)}
                 {/* !isFirstRef 일 시 바로가기 버튼 추가 */}
-            </div>
+            </Box>
         </Fade>
     )
 }

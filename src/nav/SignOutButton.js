@@ -2,7 +2,6 @@ import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import { ListItem , IconButton, Tooltip} from "@material-ui/core";
 import { makeStyles, withStyles } from '@material-ui/core'
 import { LogoutContext } from '../app';
-// 여기에 로그아웃, 탈퇴 만들기
 
 const useStyle = makeStyles(theme => ({
     logout : {
@@ -33,7 +32,9 @@ export default function () {
         <React.Fragment>
             <ListItem className={classes.logout}>
                 <LightTooltip title='Log-out'>
-                    <IconButton style={{padding:4}} onClick={()=>console.log('clicked')}><ExitToAppIcon></ExitToAppIcon></IconButton>
+                    <IconButton style={{padding:4}} onClick={handleLogout}>
+                        <ExitToAppIcon/>
+                    </IconButton>
                 </LightTooltip>    
             </ListItem>
         </React.Fragment>
