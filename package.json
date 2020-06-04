@@ -6,6 +6,7 @@
   "scripts": {
     "test": "npx webpack && serve -s dist",
     "predeploy": "npx webpack",
+    "build" : "npx webpack",
     "deploy": "gh-pages -d dist"
   },
   "keywords": [],

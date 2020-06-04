@@ -8,7 +8,7 @@ const useStyles = makeStyles((theme) => ({
       padding:0,
       display: 'flex',
       flexWrap: 'wrap',
-      height : '15vh',
+      height : '13vh',
       width : '100%',
       justifyContent : 'center',
       alignItems : 'center',
@@ -35,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
     }, []);
 
     return (
-      <Fade in={fade} timeout={{enter:1500, exit:1000}}>
+      <Fade in={fade} timeout={{enter:1000, exit:800}}>
         <Box className={classes.root} boxShadow={4} ref={domRef}>
             {children}
         </Box>
