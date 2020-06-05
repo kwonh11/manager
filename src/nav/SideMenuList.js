@@ -2,8 +2,9 @@
 import {List, ListItemText, ListItemAvatar , Divider, ListItem, Typography , Avatar} from '@material-ui/core';
 import { makeStyles } from "@material-ui/core/styles";
 import SignInButton from './SignInButton';
-import googleSignin from '../buttonImage/googleSignin.png';
-import loginUrl from '../util/googleAuth';
+import googleSigninImage from '../buttonImage/googleSignin.png';
+import googleLogin from '../util/googleAuth';
+
 
 const useStyles = makeStyles(theme => ({
     list : {
@@ -37,7 +38,7 @@ const useStyles = makeStyles(theme => ({
 export default function MenuList ({anchor , toggleDrawer, profile}) {
     const classes = useStyles();
     function handleOnClickLogin (loginUrl) {
-        window.location.assign(loginUrl);
+        googleLogin();
     }
     const isLogged = profile? true : false;
     console.log(`profile : ${JSON.stringify(profile)}`)
@@ -76,8 +77,8 @@ export default function MenuList ({anchor , toggleDrawer, profile}) {
                 </ListItem>
             </React.Fragment>)
                 : 
-            (<ListItem button className={classes.listItem} onClick={()=>handleOnClickLogin(loginUrl)}>
-                <SignInButton signIn={googleSignin}/>
+            (<ListItem button className={classes.listItem} onClick={()=>handleOnClickLogin(googleLogin)}>
+                <SignInButton signIn={googleSigninImage}/>
             </ListItem>)}
           </List>
       </div>
