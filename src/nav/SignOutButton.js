@@ -2,6 +2,8 @@ import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import { ListItem , IconButton, Tooltip} from "@material-ui/core";
 import { makeStyles, withStyles } from '@material-ui/core'
 import { LogoutContext } from '../app';
+import {useCookies} from 'react-cookie';
+
 
 const useStyle = makeStyles(theme => ({
     logout : {
@@ -24,9 +26,11 @@ const LightTooltip = withStyles((theme) => ({
 export default function () {
     const classes = useStyle();
     const setProfile = React.useContext(LogoutContext);
-    const handleLogout = () => {
-        localStorage.removeItem('token');
-        setProfile();
+    const [ cookies , setCookie , removeCookie ] = useCookies (['name','email','picture','user']);
+    const handleLogout = () => {    // 모든 쿠키 삭제와 profile제거
+        removeCookie('profile');
+        removeCookie('user');
+        location.href = location.origin;
     }
     return (
         <React.Fragment>

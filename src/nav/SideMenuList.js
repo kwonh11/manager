@@ -40,9 +40,8 @@ export default function MenuList ({anchor , toggleDrawer, profile}) {
     function handleOnClickLogin (loginUrl) {
         googleLogin();
     }
-    const isLogged = profile? true : false;
-    console.log(`profile : ${JSON.stringify(profile)}`)
-
+    const isLogged = profile? profile.name? true : false : false;
+    console.log(`profile : ${JSON.stringify(profile)}`);
     return (
         <div
         className={classes.list}

@@ -43,9 +43,9 @@ export default function Nav (props) {
         setState({ ...state, [anchor]: open });
     };
     const profile = React.useContext(UserContext);
-    const anchor = profile ? 'MYPAGE' : 'LOGIN';
+    const anchor = profile ? profile.name? 'MYPAGE' :'LOGIN' : 'LOGIN';
     const links = ['board','management'];
-    const LogoutBtn = profile? <SignOutButton/> : null;
+    const LogoutBtn = profile ? profile.name? <SignOutButton/> : null : null;
 
     return (
         <React.Fragment>
