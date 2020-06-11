@@ -1,10 +1,11 @@
 
-import {List, ListItemText, ListItemAvatar , Divider, ListItem, Typography , Avatar} from '@material-ui/core';
+import {List, ListItemText, ListItemAvatar , Divider, ListItem, Typography , Avatar, IconButton ,ListItemSecondaryAction} from '@material-ui/core';
 import { makeStyles } from "@material-ui/core/styles";
 import SignInButton from './SignInButton';
 import googleSigninImage from '../buttonImage/googleSignin.png';
-import googleLogin from '../util/googleAuth';
-
+import {redirectGoogleLogin} from '../util/LoginAPI';
+import {Edit, Info, DeleteForever, Warning} from '@material-ui/icons'
+import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles(theme => ({
     list : {
@@ -37,11 +38,10 @@ const useStyles = makeStyles(theme => ({
 }))
 export default function MenuList ({anchor , toggleDrawer, profile}) {
     const classes = useStyles();
-    function handleOnClickLogin (loginUrl) {
-        googleLogin();
+    function handleOnClickLogin () {
+        redirectGoogleLogin();
     }
     const isLogged = profile? profile.name? true : false : false;
-    console.log(`profile : ${JSON.stringify(profile)}`);
     return (
         <div
         className={classes.list}
@@ -74,9 +74,27 @@ export default function MenuList ({anchor , toggleDrawer, profile}) {
                     }>
                     </ListItemText>
                 </ListItem>
+                <ListItem className={classes.listItem} divider/>
+                <ListItem className={classes.listItem} divider>
+                    <Info color='primary' style={{marginRight:'1vw'}}/>
+                    <ListItemText secondary='EDIT HEADERS'/>
+                    <Link to='/headers'>
+                        <IconButton edge='end' aria-label='edit-header'>
+                            <Edit color='primary' fontSize='large'/>
+                        </IconButton>
+                    </Link>
+                </ListItem>
+                <ListItem className={classes.listItem} divider/>
+                <ListItem className={classes.listItem} divider>
+                    <Warning color='secondary' style={{marginRight:'1vw'}}/>
+                    <ListItemText secondary='REMOVE ALL DATA'/>
+                    <IconButton edge='end' aria-label='edit-header'>
+                        <DeleteForever color='secondary' fontSize='large'/>
+                    </IconButton>
+                </ListItem>
             </React.Fragment>)
                 : 
-            (<ListItem button className={classes.listItem} onClick={()=>handleOnClickLogin(googleLogin)}>
+            (<ListItem button className={classes.listItem} onClick={handleOnClickLogin}>
                 <SignInButton signIn={googleSigninImage}/>
             </ListItem>)}
           </List>

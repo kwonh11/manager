@@ -6,7 +6,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import {Divider} from '@material-ui/core'
 import {AppBar as Appbar} from '@material-ui/core';
 import {Toolbar} from '@material-ui/core';
-import HideOnSchroll from "../util/HideOnSchroll";
+import HideOnSchroll from "../customHook/HideOnSchroll";
 import SideMenuList from "./SideMenuList";
 import { UserContext } from "../app";
 import SignOutButton from "./SignOutButton";
@@ -43,9 +43,9 @@ export default function Nav (props) {
         setState({ ...state, [anchor]: open });
     };
     const profile = React.useContext(UserContext);
-    const anchor = profile ? profile.name? 'MYPAGE' :'LOGIN' : 'LOGIN';
+    const anchor = profile.name? 'MYPAGE' :'LOGIN';
     const links = ['board','management'];
-    const LogoutBtn = profile ? profile.name? <SignOutButton/> : null : null;
+    const LogoutBtn = profile.name? <SignOutButton/> : null;
 
     return (
         <React.Fragment>

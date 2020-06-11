@@ -2,7 +2,7 @@ import {Typography} from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { Container} from '@material-ui/core';
 import { Link} from '@material-ui/core';
-import arrow from '../background/arrow.png';
+import arrow from '../images/arrow.png';
 import {Box} from '@material-ui/core';
 import {Tooltip} from '@material-ui/core';
 
@@ -33,11 +33,11 @@ function Copyright() {
       textAlign:"center",
     },
     arrow : {
-      width : '12vw',
-      height : '12vh',
+      width : '8vw',
+      height : '8vh',
       alignSelf : 'center',
       background :`no-repeat center/80% url(${arrow})`,
-      marginBottom:'3vh',
+      marginBottom:'2vh',
       backgroundSize:'contain',
     },
   }));

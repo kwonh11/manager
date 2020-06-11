@@ -1,6 +1,6 @@
 import {Button , Box, Typography} from '@material-ui/core'
 import {makeStyles} from '@material-ui/core/styles'
-import { PlayArrowOutlined } from "@material-ui/icons";
+import { PlayArrowSharp } from "@material-ui/icons";
 import {Link} from 'react-router-dom';
 
 const useStyle = makeStyles(theme => ({
@@ -23,7 +23,7 @@ export default function () {
     return (
         <Box className={classes.innerBox}>
             <Link to='/management' style={{textDecoration:'none'}}>
-                <Button size='large' variant='outlined' startIcon={<PlayArrowOutlined color='primary' style={{fontSize : 30}}/>} className={classes.button}>
+                <Button size='large' color='secondary' variant='outlined' startIcon={<PlayArrowSharp color='secondary' style={{fontSize : 30}}/>} className={classes.button}>
                     GET STARTED
                 </Button>
             </Link>

@@ -2,12 +2,13 @@
 import Nav from "./nav/Nav";
 import Board from "./board/Board";
 import Management from "./management/Management";
+import Headers from './management/Headers';
 import {CssBaseline} from '@material-ui/core';
 import Home from "./home/Home";
 import Footer from '../src/footer/Footer';
-import redirectWithToken from "./util/redirectWithToken";
 import qs from 'qs';
 import {useCookies} from 'react-cookie'
+import { getTokenAndProfile } from "./util/LoginAPI";
 
 // 컨텍스트 목록
 export const UserContext = React.createContext();
@@ -20,14 +21,16 @@ export default function App() {
     const token = cookies.user;
 
     React.useEffect(()=>{
-        console.log('fetch API 실행');
-        redirectWithToken(id_token).then(data => {
-            const {name ,email, picture} = data;
-            console.log(`response data : ${JSON.stringify(data)}`);
-            setCookie("profile",{name , email, picture},{path:"/" , maxAge : 7200});  // maxAge : 2시간
-        }).catch(err => {
-            console.log(`error occured : ${err}`)
-        })
+        if(id_token) {
+            console.log('fetch API 실행');
+            getTokenAndProfile(id_token).then(data => {
+                const {name ,email, picture} = data;
+                console.log(`response data : ${JSON.stringify(data)}`);
+                setCookie("profile",{name , email, picture},{path:"/" , maxAge : 7200});  // maxAge : 2시간
+            }).catch(err => {
+                console.log(`error occured : ${err}`)
+            })
+        }
     },[id_token]);
 
     React.useEffect(()=>{
@@ -47,7 +50,7 @@ export default function App() {
 
     return (
         <React.Fragment>
-            <UserContext.Provider value={profile}>          {/* 유저 프로필 컨텍스트    */}
+            <UserContext.Provider value={profile || {name : ''}}>          {/* 유저 프로필 컨텍스트    */}
             <LogoutContext.Provider value={setProfile}>   {/* 로그아웃 이벤트 컨텍스트   */}
             <CssBaseline/>
                 <BrowserRouter>
@@ -56,6 +59,7 @@ export default function App() {
                         <Route exact path='/' component={Home}></Route>
                         <Route path='/board' component={Board}></Route>
                         <Route path='/management' component={Management}></Route>
+                        <Route path='/headers' component={Headers}></Route>
                     </Switch>
                 </BrowserRouter>
             <Footer/>

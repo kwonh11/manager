@@ -1,9 +1,15 @@
 import MaterialTable from 'material-table';
-import {Box} from '@material-ui/core'
-import {Snackbar} from '@material-ui/core';
-import Alert from '@material-ui/lab/Alert';
+import {Box, Button, Tooltip} from '@material-ui/core'
 import ManualDialog from "./ManualDialog";
-import { options,localization } from "./options";
+import { options,localization } from "./TableOptions";
+import useOnFirstRender from '../customHook/useOnFirstRender';
+import { getManagementTable } from "../util/ManagementAPI";
+import {useCookies} from 'react-cookie';
+import DefaultPage from './DefaultPage';
+import parseData from '../util/parseData';
+import SaveButton from './SaveButton';
+import { saveData } from "../util/ManagementAPI";
+import CustomSnackbar from './SnackBar';
 
 // useEffect로 data, columns 가 변경될 때마다 서버에 저장 후 갱신
 // ./util 경로에 로직 작성
@@ -14,59 +20,111 @@ import { options,localization } from "./options";
 
 
 export default function ManagementTable() {
-  const [snack, setSnack] = React.useState({open : false})
-  const [dialog, setDialog] = React.useState({open : false})
+  const [ cookies , setCookie , removeCookie ] = useCookies (['profile','user']);
+  const handleLogout = () => {    // 모든 쿠키 삭제와 profile제거
+      removeCookie('profile');
+      removeCookie('user');
+      location.href = location.origin;
+  }
+  // states
+  const [snack, setSnack] = React.useState({open : false});
+  const [savedSnack , setSavedSnack] = React.useState({open:false});
+  const [errorSnack , setErrorSnack] = React.useState({open:false});
+  const [dialog, setDialog] = React.useState({open : false});
+  const [state, setState] = React.useState({  // 최초 API로 받아오는 동작필요
+    defaultPage : true,
+    hasTable : false,
+    columns: [],
+    data: [],
+  });
+  const tableRef = React.useRef();
 
+  // constructor
+  useOnFirstRender(()=>{
+    if (cookies.user) {   // 쿠키에 토큰이 있을 경우 테이블 fetch API실행
+      getManagementTable().then(response => {
+        console.log(`status : ${response.status} , data : ${JSON.stringify(response.data)}`);
+          // 유저 확인됐고 테이블도 비어있지 않을 경우
+          if (response.status===200 && response.data.headers) {
+            setState({
+              columns : parseData(response.data.headers , response.data.groupings),
+              data : response.data.data,
+              defaultPage : false,
+              hasTable : true});
+          }
+      }).catch(err => {
+        console.log(err);
+        setErrorSnack({open:true});
+      })
+    }
+  });
+
+  // events
+  const handleDialogClose = () => {setDialog({open : false});};
+  const handleOnSave = () => {
+      // Material table 의 ref값에 접근해서 데이터 얻어오기
+      // tableRef.current.dataManager
+      const data = [];
+      const groupings = [];
+      const headers = tableRef.current.dataManager.columns.reduce((obj,v,i)=>{
+        obj[`header${i}`] = v.title;
+        groupings.push(v.grouping);
+        return obj;
+      },{})
+      tableRef.current.dataManager.data.forEach((v,i)=>{
+        const {tableData, ...rest} = v;
+        data.push(rest);
+      })
+      // console.log(` result : 
+      //   ${JSON.stringify(data)}
+      //   ${groupings}
+      //   ${JSON.stringify(headers)}
+      // `)
+      saveData(headers, groupings, data).then(result => {
+        if (result.result === 'success') {
+          setSavedSnack({open:true});
+        } else {
+          setErrorSnack({open:true});
+        }
+      });
+  }
   React.useEffect(()=>{ // 최초렌더링시 도움말 Snack 출력
     setTimeout(()=>{setSnack({open:true})},400);
   },[]);
 
+  // effects
   React.useEffect(() => {   // window 더블클릭 이벤트 추가, 도움말 open
     const ondbClick = () => setDialog({open : !dialog.open});
+    const onKeydown = (e) => {   // ctrl + s로 저장 event
+      if (navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey && e.keyCode === 83) {
+        e.preventDefault();
+        handleOnSave();
+      }
+    }
+    window.addEventListener('keydown', onKeydown);
     window.addEventListener('dblclick', ondbClick);
   return () => {
       window.removeEventListener('dblclick', ondbClick);
+      window.removeEventListener('keydown', onKeydown);
   };
 }, []);
 
-  const [state, setState] = React.useState({  // 최초 API로 받아오는 동작필요
-    columns: [
-      { title: 'Name', field: 'name' , grouping:false},
-      { title: 'Surname', field: 'surname' },
-      { title: 'Birth Year', field: 'birthYear' },
-      { title: 'Phone' , field:'phone', grouping:false},
-      {
-        title: 'Gender',
-        field: 'gender',
-        lookup: { 1: 'Male', 2: 'Female' }
-      },
-      { title: 'Memo' , field:'memo'}
-    ],
-    data: [
-      { name: 'Mehmet', surname: 'Baran', birthYear: 1983, phone:'01046509995' ,gender: 1 , memo:''},
-      { name: 'Adam', surname: 'Adam', birthYear: 1984, phone:'01046509795' ,gender: 2 , memo:''},
-      { name: 'Mehmet', surname: 'Atom', birthYear: 1985, phone:'01046509695' ,gender: 1 , memo:''},
-      { name: 'mul', surname: 'Kongna', birthYear: 1986, phone:'01046509195' ,gender: 1 , memo:''},
-      { name: 'Jack', surname: 'Jack', birthYear: 1987, phone:'01046509295' ,gender: 2 , memo:''},
-      { name: 'Bob', surname: 'Bob', birthYear: 1988, phone:'01046509395' ,gender: 2 , memo:''},
-      { name: 'Mehmet', surname: 'Bill', birthYear: 1989, phone:'01046509495' ,gender: 1 , memo:''},
-      { name: 'Johnson', surname: 'Johnson', birthYear: 1990, phone:'01046509895' ,gender: 2 , memo:''},
-    ],
-  });
+// components
   const Margin = () => (<Box style={{height:'100px'}}></Box>);  // 여백
-  const handleClose = (event, reason) => {
-    setSnack({open: false });
-  };
-  const handleDialogClose = () => {
-    setDialog({open : false});
-  }
-
   return (
-    <Box>
+    state.defaultPage ?
+      (<DefaultPage state={state} setState={setState}/>)
+      :
+    (<Box>
         <ManualDialog open={dialog.open} onClose={handleDialogClose}/>
     <Margin/>
     <MaterialTable
-      title="Management App"
+      tableRef={tableRef}
+      title={
+      <SaveButton setSavedSnack={setSavedSnack} 
+      // 마운트 이후에 접근필요
+      dataManager={tableRef.current ? tableRef.current.dataManager : {}}/>
+    }
       columns={state.columns}
       data={state.data}
       localization={localization} // 로컬라이즈
@@ -90,18 +148,17 @@ export default function ManagementTable() {
         onRowAdd: (newData) =>  // 추가
           new Promise((resolve) => {
             setTimeout(() => {
-              resolve();
               setState((prevState) => {
                 const data = [...prevState.data];
                 data.push(newData);
                 return { ...prevState, data };
               });
-            }, 600);
+              resolve();
+            }, 400);
           }),
         onRowUpdate: (newData, oldData) =>  // 수정
           new Promise((resolve) => {
             setTimeout(() => {
-              resolve();
               if (oldData) {
                 setState((prevState) => {
                   const data = [...prevState.data];
@@ -109,20 +166,18 @@ export default function ManagementTable() {
                   return { ...prevState, data };
                 });
               }
-            }, 600);
+              resolve();
+            }, 400);
           }),
       }}
     />
     <Margin/>
-    <Snackbar
-    open={snack.open}
-    onClose={handleClose}
-    anchorOrigin={{ vertical:'top', horizontal:'center' }}
-    >
-        <Alert onClose={handleClose} severity="success" variant='filled' message={{fontWeight:'bolder', fontSize:'5rem'}}>
-            need some help? ? double-click any space !
-        </Alert>
-    </Snackbar>
+    <CustomSnackbar open={snack.open} onClose={()=>setSnack({open:false})} 
+    content='need some help? ? double-click any space !' status="success"/>
+    <CustomSnackbar open={savedSnack.open} onClose={()=>setSavedSnack({open:false})} 
+    content='SAVED !' status="success"/>
+    <CustomSnackbar open={errorSnack.open} onClose={()=>setErrorSnack({open:false})} 
+    content='ERROR !' status="error"/>
     </Box>
-  );
+  ));
 }

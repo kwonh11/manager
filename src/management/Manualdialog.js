@@ -23,7 +23,10 @@ export default function ManualDialog (props) {
         {icon : 'playlist_add_check' , description : 'Follow the steps below to [delete] rows.'},
         {icon : 'check_box' , description : ' ① Select the checkbox on the row.'},
         {icon : 'fact_check' , description : ' ② Check the number of the rows selected.'},
-        {icon : 'delete' , description : ' ③ Click the bin icon on the right above.'},
+        {icon : 'delete' , description : ' ③ Click the Bin icon on the right above.'},
+        {icon : 'playlist_add_check' , description : 'Follow the steps below to [Edit] headers.'},
+        {icon : 'menu' , description : ' ① Open the MYPAGE'},
+        {icon : 'create' , description : ' ② Click the Pencil icon'},
     ]
 
     return (

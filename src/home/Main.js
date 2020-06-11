@@ -1,6 +1,6 @@
 import { makeStyles } from '@material-ui/core/styles';
 import { Typography, Box } from "@material-ui/core";
-import wood2 from "../background/wood2.jpg";
+import wood2 from "../images/wood2.jpg";
 import { Fade } from "@material-ui/core";
 import StartButton from "./StartButton";
 
@@ -34,14 +34,14 @@ export default function Main () {
     }, []);
 
     return (
-        <Fade in={fade} timeout={{enter:1300, exit:800}}>
-            <Box className={classes.root} ref={domRef}>
-                <Typography variant='h1' color='textSecondary'> 
-                    {isFirstRef.current ? 'WELCOME!!' : 'Ready to start?'}
-                </Typography>
-                    {isFirstRef.current? null : (<StartButton/>)}
-                {/* !isFirstRef 일 시 바로가기 버튼 추가 */}
-            </Box>
-        </Fade>
+    <Fade in={fade} timeout={{enter:1300, exit:800}}>
+        <Box className={classes.root} ref={domRef}>
+            <Typography variant='h1' color='textSecondary'> 
+                {isFirstRef.current ? 'WELCOME!!' : 'Ready to start?'}
+            </Typography>
+                {isFirstRef.current? null : (<StartButton/>)}
+            {/* !isFirstRef 일 시 바로가기 버튼 추가 */}
+        </Box>
+    </Fade>
     )
 }
