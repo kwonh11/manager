@@ -28,7 +28,7 @@ import {AddBox} from '@material-ui/icons';
         disabled
         style={{fontWeight:'bolder'}}
         endIcon={<AddBox/>}>
-          {`No Record to display
+          {`No Record to display,
           Click the Button `}
         </Button>
         <Button variant='text'

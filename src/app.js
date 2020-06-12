@@ -87,7 +87,8 @@ export default function App() {
             </LogoutContext.Provider>
             </UserContext.Provider>
             <CustomSnackbar open={globalSnackbar.open} onClose={()=>setGlobalSnackbar({open:false})} 
-            content={'Saved it automatically'} status={globalSnackbar.result}
+            content={globalSnackbar.result==='error'? `Not saved.
+            Reason : Empty or more than 15 characters.` :'Saved it automatically'} status={globalSnackbar.result}
             direction={{vertical:'top', horizontal:'right'}}/>
         </React.Fragment>
     )

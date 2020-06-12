@@ -125,8 +125,8 @@ export default function Headers ({isLoading}) {
     React.useEffect(()=>{ 
         setFade(true);
         return () => {
-            handleSubmit(dataRef.current.headers, dataRef.current.groupings, true);
-            handleProgress('success');
+            const result = handleSubmit(dataRef.current.headers, dataRef.current.groupings, true);
+            handleProgress(result === 'error' ? 'error' : 'success');
         }
     },[]);
 
@@ -140,12 +140,12 @@ export default function Headers ({isLoading}) {
     }
     const handleSubmit = (headers, groupings, isAutoSave) => {
         if (!Object.values(headers).every(v => v.length <= 15)) { // 15글자 이상 제한 에러메세지
-            setSnack({open:true}) 
-            return 
+            setSnack({open:true});
+            return 'error';
         }
         if (Object.values(headers).filter(v=>v).length === 0) {     // 비어있을 경우 에러메세지
             setSnack({open:true})
-            return
+            return 'error';
         }
         saveHeaders(headers,groupings)
         .then(response => {

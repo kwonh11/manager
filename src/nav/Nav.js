@@ -1,15 +1,13 @@
 import { Link } from "react-router-dom";
-import {Drawer} from '@material-ui/core';
-import {Button} from '@material-ui/core';
-import {Grid} from "@material-ui/core";
+import {Toolbar, Drawer , Button , Grid,
+     Divider, AppBar as Appbar,
+} from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import {Divider} from '@material-ui/core'
-import {AppBar as Appbar} from '@material-ui/core';
-import {Toolbar} from '@material-ui/core';
 import HideOnSchroll from "../customHook/HideOnSchroll";
 import SideMenuList from "./SideMenuList";
 import { UserContext } from "../app";
 import SignOutButton from "./SignOutButton";
+
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -32,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
         justify:'flex-end',
         flexDirection : 'row',
         padding:`0 ${theme.spacing(3)}`
-    }
+    },
   }));
 export default function Nav (props) {
     const [state, setState] = React.useState({
@@ -66,7 +64,7 @@ export default function Nav (props) {
                         {anchor}
                     </Button>
                     {LogoutBtn}
-                    <Drawer open={state[anchor]} onClose={toggleDrawer(anchor, false)}>
+                    <Drawer open={state[anchor]} onClose={toggleDrawer(anchor, false)} variant='persistent'>
                         {SideMenuList( {...props, anchor ,toggleDrawer , profile} )}
                     </Drawer>
                 </Grid>
