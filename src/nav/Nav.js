@@ -38,7 +38,8 @@ export default function Nav (props) {
     });
     const classes = useStyles();
     const toggleDrawer = (anchor, open) => (event) => {
-        setState({ ...state, [anchor]: open });
+        const flag = open? state[anchor] ? false : true : false;
+        setState({ ...state, [anchor]: flag });
     };
     const profile = React.useContext(UserContext);
     const anchor = profile.name? 'MYPAGE' :'LOGIN';

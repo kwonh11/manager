@@ -79,13 +79,13 @@ export default function Headers ({isLoading}) {
     useOnFirstRender(()=>{
         getManagementTable().then(response => {
             console.log(`response : ${JSON.stringify(response)}`);
-            if (response.status === 200 && response.data.headers) {
+            if (response.status === 200) {
                 const groupingLength = response.data.groupings.length;
                 const groupings = [...response.data.groupings];
                 for (let i = 0; i < 10 - groupingLength; i ++) {
                     groupings.push(false);
                 }
-                const headers = response.data.headers;
+                const headers = response.data.headers ? response.data.headers : {};
                 const headersLength = Object.values(headers).length;
                 for (let i = headersLength; i < 10; i++) {
                     headers[`header${i}`] = '';
@@ -95,21 +95,21 @@ export default function Headers ({isLoading}) {
                 setData({headers, groupings})
             } else {
                 if (response.status === 204) {  // unauthorized
-                    setTimeout(handleLogout(), 2000);
+                    setTimeout(handleLogout(), 3500);
                     setResultSnack({open : true,status:'error', content : `Please log in again.`});
                 } else {
                     setResultSnack({open : true,status:'error', content : `error (code : ${response.status})`});
                 }
             }
         }).catch(err => {
-            console.log(err);
-            setTimeout(handleLogout(), 2000);
-            setResultSnack({open:true,status:'error', content:'Please log in again.'});
+            if(err) {
+                console.log(err);
+                setTimeout(handleLogout(), 3500);
+                setResultSnack({open:true,status:'error', content:'Please log in again.'});
+            }
         })}
     )
 
-
-    // unMount 되는 시점에 async API를 호출하게되면 state에 접근이 불가함, state를 ref에 저장하자
     React.useEffect(()=>{
         dataRef.current = {
             headers : {
@@ -119,8 +119,8 @@ export default function Headers ({isLoading}) {
                 ...data.groupings
             ]
         };
-        console.log(JSON.stringify(dataRef.current));
     },[data.headers, data.groupings]);
+
     // effects
     React.useEffect(()=>{ 
         setFade(true);

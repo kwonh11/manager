@@ -9,7 +9,8 @@ import googleSigninImage from '../buttonImage/googleSignin.png';
 import {redirectGoogleLogin} from '../util/LoginAPI';
 import {Edit, Info, DeleteForever, Warning} from '@material-ui/icons'
 import { Link } from 'react-router-dom';
-
+import { saveData } from "../util/ManagementAPI";
+import {GlobalSnackbarContext} from '../app'
 const useStyles = makeStyles(theme => ({
     list : {
         width : '23vw',
@@ -69,6 +70,7 @@ const useStyles = makeStyles(theme => ({
 }))
 export default function MenuList ({anchor , toggleDrawer, profile}) {
     const classes = useStyles();
+    const handleGlobalSnackbar = React.useContext(GlobalSnackbarContext);
     const [emailInput, setEmailInput] = React.useState('');
     function handleOnClickLogin () {
         redirectGoogleLogin();
@@ -79,6 +81,15 @@ export default function MenuList ({anchor , toggleDrawer, profile}) {
     const handleOnSubmit = () => {
         if (emailInput === profile.email) {
             console.log('일치');
+            saveData({},[],[{}]).then(data => {
+                handleGlobalSnackbar({
+                    open:true, 
+                    result: data.result === 'success' ? 'success' : 'error'
+                });
+                setTimeout(()=>{
+                    location.reload(true);
+                },1500);
+            })
         } else {
             console.log('불일치');
         }
@@ -136,6 +147,8 @@ export default function MenuList ({anchor , toggleDrawer, profile}) {
                         <DeleteForever color='secondary' fontSize='large'/>
                     </IconButton>
                 </ListItem>
+                
+                {/* 모달 */}
                 <Modal
                 open={modal}
                 onClose={handleOnCloseModal}
@@ -152,8 +165,10 @@ export default function MenuList ({anchor , toggleDrawer, profile}) {
                             </Typography>
                         </Box>
                         <Box className={classes.modalColBox}>
-                            <Typography id="modal-contents" variant='body1' style={{fontWeight:'bold'}}>{`All data will be deleted and cannot be recovered.
-                            Please enter the email correctly to continue.`}</Typography>
+                            <Typography id="modal-contents" variant='body1' style={{fontWeight:'bold'}}>
+                                {`All data will be deleted and cannot be recovered.
+                                Please enter the email correctly to continue.`}
+                            </Typography>
                             <Typography variant='caption'>{profile.email}</Typography>
                         </Box>
                         <Box className={classes.modalRowBox}>

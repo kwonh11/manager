@@ -15,7 +15,7 @@ import CustomSnackbar from './customHook/SnackBar';
 export const UserContext = React.createContext();
 export const LogoutContext = React.createContext();
 export const ProgressContext = React.createContext();
-export const RateContext = React.createContext();
+export const GlobalSnackbarContext = React.createContext();
 
 export default function App() {
     const { id_token } = qs.parse(window.location.hash.substr(1));
@@ -70,7 +70,7 @@ export default function App() {
             <UserContext.Provider value={profile || {name : ''}}>          {/* 유저 프로필 컨텍스트    */}
             <LogoutContext.Provider value={setProfile}>   {/* 로그아웃 이벤트 컨텍스트   */}
             <ProgressContext.Provider value={(result)=>handleBeforeunload(result)}>
-            <RateContext.Provider value={progressRef.current}>
+            <GlobalSnackbarContext.Provider value={setGlobalSnackbar}>
             <CssBaseline/>
                 <BrowserRouter>
                 <Nav/>
@@ -82,13 +82,13 @@ export default function App() {
                 </Switch>
                 </BrowserRouter>
             <Footer/>
-            </RateContext.Provider>
+            </GlobalSnackbarContext.Provider>
             </ProgressContext.Provider>
             </LogoutContext.Provider>
             </UserContext.Provider>
             <CustomSnackbar open={globalSnackbar.open} onClose={()=>setGlobalSnackbar({open:false})} 
             content={globalSnackbar.result==='error'? `Not saved.
-            Reason : Empty or more than 15 characters.` :'Saved it automatically'} status={globalSnackbar.result}
+            Reason : Empty or more than 15 characters.` :' SAVED '} status={globalSnackbar.result}
             direction={{vertical:'top', horizontal:'right'}}/>
         </React.Fragment>
     )

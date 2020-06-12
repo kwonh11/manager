@@ -81,10 +81,7 @@ export default function ManagementTable({isLoading}) {
       saveData(headers, groupings, data);
       if(!isAutoSave) setSavedSnack({open:true});
   }
-  // React.useEffect(()=>{ // 최초렌더링시 도움말 Snack 출력
-    
-  // },[]);
-
+  
   // effects
   React.useEffect(() => {   // window 더블클릭 이벤트 추가, 도움말 open
     const ondbClick = () => setDialog({open : !dialog.open});
@@ -94,14 +91,14 @@ export default function ManagementTable({isLoading}) {
         handleOnSave();
       }
     }
-    
     window.addEventListener('keydown', onKeydown);
     window.addEventListener('dblclick', ondbClick);
   return () => {
       window.removeEventListener('dblclick', ondbClick);
       window.removeEventListener('keydown', onKeydown);
-      handleOnSave(true);
-      handleProgress('success');
+      // 초기접근의 경우 데이터가 없어 에러 발생할 수 있어 삼항식으로 판단 후 언마운트시의 fetchAPI실행
+      tableRef.current ? tableRef.current.dataManager ? handleOnSave(true) : null : null;
+      tableRef.current ? tableRef.current.dataManager ? handleProgress('success') : null : null;
   };
 }, []);
 
