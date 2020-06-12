@@ -8,7 +8,9 @@ import { saveHeaders } from "../util/ManagementAPI";
 import { getManagementTable } from '../util/ManagementAPI';
 import useOnFirstRender from '../customHook/useOnFirstRender';
 import {useCookies} from 'react-cookie';
-import CustomSnackbar from './SnackBar';
+import CustomSnackbar from '../customHook/SnackBar';
+import Loading from "../customHook/Loading";
+import { ProgressContext } from "../app";
 
 const useStyle = makeStyles((theme) => ({
     container : {
@@ -58,15 +60,11 @@ const defaultHeader = {
     "header8" : '',
     "header9" : '',
 }
-export default function Headers ({existingHeaders}) {
-    const [ cookies , setCookie , removeCookie ] = useCookies (['profile','user']);
-    const handleLogout = () => {    // 모든 쿠키 삭제와 profile제거
-        removeCookie('profile');
-        removeCookie('user');
-        location.href = location.origin;
-    }
-
+export default function Headers ({isLoading}) {
+    // style, cookie
     const classes = useStyle();
+    const handleProgress = React.useContext(ProgressContext);
+    const [ cookies , setCookie , removeCookie ] = useCookies (['profile','user']);
     // states
     const [fade, setFade] = React.useState(false);
     const [snack, setSnack] = React.useState({open:false});
@@ -75,10 +73,9 @@ export default function Headers ({existingHeaders}) {
         headers : defaultHeader,
         groupings : Array(10).fill(false),
     })
-    // effects
-    React.useEffect(()=>{ 
-        setFade(true);
-    },[]);
+    // ref
+    const dataRef = React.useRef();
+    // constructor
     useOnFirstRender(()=>{
         getManagementTable().then(response => {
             console.log(`response : ${JSON.stringify(response)}`);
@@ -93,6 +90,8 @@ export default function Headers ({existingHeaders}) {
                 for (let i = headersLength; i < 10; i++) {
                     headers[`header${i}`] = '';
                 }
+                dataRef.current = {headers,groupings};
+                console.log(dataRef.current);
                 setData({headers, groupings})
             } else {
                 if (response.status === 204) {  // unauthorized
@@ -108,9 +107,38 @@ export default function Headers ({existingHeaders}) {
             setResultSnack({open:true,status:'error', content:'Please log in again.'});
         })}
     )
+
+
+    // unMount 되는 시점에 async API를 호출하게되면 state에 접근이 불가함, state를 ref에 저장하자
+    React.useEffect(()=>{
+        dataRef.current = {
+            headers : {
+                ...data.headers
+            },
+            groupings : [
+                ...data.groupings
+            ]
+        };
+        console.log(JSON.stringify(dataRef.current));
+    },[data.headers, data.groupings]);
+    // effects
+    React.useEffect(()=>{ 
+        setFade(true);
+        return () => {
+            handleSubmit(dataRef.current.headers, dataRef.current.groupings, true);
+            handleProgress('success');
+        }
+    },[]);
+
+
         
     // events
-    const handleSubmit = (headers, groupings) => {
+    const handleLogout = () => {    // 모든 쿠키 삭제와 profile제거
+        removeCookie('profile');
+        removeCookie('user');
+        location.href = location.origin;
+    }
+    const handleSubmit = (headers, groupings, isAutoSave) => {
         if (!Object.values(headers).every(v => v.length <= 15)) { // 15글자 이상 제한 에러메세지
             setSnack({open:true}) 
             return 
@@ -119,8 +147,9 @@ export default function Headers ({existingHeaders}) {
             setSnack({open:true})
             return
         }
-        saveHeaders(headers,groupings).then(response => {
-            setResultSnack({open : true, content : response.result});
+        saveHeaders(headers,groupings)
+        .then(response => {
+            if (!isAutoSave) setResultSnack({open : true, content : response.result});
         })
         .catch(err => {
             setTimeout(handleLogout(), 2000);
@@ -139,10 +168,12 @@ export default function Headers ({existingHeaders}) {
     }
     // component
     return (
+        <React.Fragment>
+        <Loading isLoading={isLoading}/>
         <Box className={classes.container}>
         <Fade in={fade} timeout={{enter : 1500}}>
             <Paper className={classes.paper} elevation={4}>
-                <form className={classes.formRoot} onSubmit={handleSubmit} autoComplete='off'>
+                <form className={classes.formRoot} autoComplete='off'>
                     <Box component='div'>
                         <Typography variant='h4' color='textPrimary' style={{fontWeight:'bolder'}}> 
                             Header Edit Form 
@@ -197,5 +228,6 @@ Do not use when unique values e.g.) Name, address, etc."
         <CustomSnackbar open={resultSnack.open} onClose={()=>setResultSnack({open:false})} 
         content={resultSnack.content} status={resultSnack.status==='error'? 'error' : 'success'}/>
         </Box>
+        </React.Fragment>
     )
 }

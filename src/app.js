@@ -9,17 +9,35 @@ import Footer from '../src/footer/Footer';
 import qs from 'qs';
 import {useCookies} from 'react-cookie'
 import { getTokenAndProfile } from "./util/LoginAPI";
+import CustomSnackbar from './customHook/SnackBar';
 
 // 컨텍스트 목록
 export const UserContext = React.createContext();
 export const LogoutContext = React.createContext();
+export const ProgressContext = React.createContext();
+export const RateContext = React.createContext();
 
 export default function App() {
     const { id_token } = qs.parse(window.location.hash.substr(1));
     const [ cookies , setCookie , removeCookie ] = useCookies (['profile','user']);
     const [ profile , setProfile ] = React.useState(cookies.profile);
+    const [isLoading, setIsLoading] = React.useState(false);
+    const [globalSnackbar, setGlobalSnackbar] = React.useState({open : false , result: 'success'})
     const token = cookies.user;
-
+    const progressRef = React.useRef(0);
+    const handleBeforeunload = (result) => {
+        const interval = setInterval(()=> {
+            console.log(`progress : ${progressRef.current}`);
+            setIsLoading(true);
+            progressRef.current = (progressRef.current < 100 ? progressRef.current + 20 : 100);
+        if (progressRef.current === 100) {
+             progressRef.current = 0;
+             setIsLoading(false);
+             setGlobalSnackbar({open:true , result:result});
+             clearInterval(interval);
+        }
+    },200)
+    }
     React.useEffect(()=>{
         if(id_token) {
             console.log('fetch API 실행');
@@ -47,24 +65,30 @@ export default function App() {
             setProfile(cookies.profile);
         }
     },[cookies.profile]);
-
     return (
         <React.Fragment>
             <UserContext.Provider value={profile || {name : ''}}>          {/* 유저 프로필 컨텍스트    */}
             <LogoutContext.Provider value={setProfile}>   {/* 로그아웃 이벤트 컨텍스트   */}
+            <ProgressContext.Provider value={(result)=>handleBeforeunload(result)}>
+            <RateContext.Provider value={progressRef.current}>
             <CssBaseline/>
                 <BrowserRouter>
-                    <Nav/>
-                    <Switch>
-                        <Route exact path='/' component={Home}></Route>
-                        <Route path='/board' component={Board}></Route>
-                        <Route path='/management' component={Management}></Route>
-                        <Route path='/headers' component={Headers}></Route>
-                    </Switch>
+                <Nav/>
+                <Switch>
+                    <Route exact path='/' render={()=><Home isLoading={isLoading}/>}></Route>
+                    <Route path='/board' render={()=><Board isLoading={isLoading}/>}></Route>
+                    <Route path='/management' render={()=> <Management isLoading={isLoading}/>}></Route>
+                    <Route path='/headers' render={()=> <Headers isLoading={isLoading}/>}></Route>
+                </Switch>
                 </BrowserRouter>
             <Footer/>
+            </RateContext.Provider>
+            </ProgressContext.Provider>
             </LogoutContext.Provider>
             </UserContext.Provider>
+            <CustomSnackbar open={globalSnackbar.open} onClose={()=>setGlobalSnackbar({open:false})} 
+            content={'Saved it automatically'} status={globalSnackbar.result}
+            direction={{vertical:'top', horizontal:'right'}}/>
         </React.Fragment>
     )
 }

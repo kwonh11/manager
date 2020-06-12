@@ -9,6 +9,9 @@ export const getManagementTable =  () => {
 }
 
 export const saveHeaders = (headers, groupings) => {
+    console.log(`saving headers : 
+    headers : ${JSON.stringify(headers)}
+    groupings : ${JSON.stringify(groupings)}`);
     return (axios.put(`${serverURL}/headers`, {
         // data
         headers,

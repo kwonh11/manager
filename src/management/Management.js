@@ -1,16 +1,17 @@
+import {useCookies} from 'react-cookie';
 import MaterialTable from 'material-table';
-import {Box, Button, Tooltip} from '@material-ui/core'
 import ManualDialog from "./ManualDialog";
 import { options,localization } from "./TableOptions";
 import useOnFirstRender from '../customHook/useOnFirstRender';
 import { getManagementTable } from "../util/ManagementAPI";
-import {useCookies} from 'react-cookie';
 import DefaultPage from './DefaultPage';
 import parseData from '../util/parseData';
 import SaveButton from './SaveButton';
 import { saveData } from "../util/ManagementAPI";
-import CustomSnackbar from './SnackBar';
-
+import CustomSnackbar from '../customHook/SnackBar';
+import { Box } from "@material-ui/core";
+import { ProgressContext } from "../app";
+import Loading from "../customHook/Loading";
 // useEffect로 data, columns 가 변경될 때마다 서버에 저장 후 갱신
 // ./util 경로에 로직 작성
 // 통신에 대한 testcode작성
@@ -19,13 +20,11 @@ import CustomSnackbar from './SnackBar';
 // SideMenuList => Login으로 변경, 비로그인 시 LOGIN으로 보일 것, 로그인시 MY MENU로 보기
 
 
-export default function ManagementTable() {
+export default function ManagementTable({isLoading}) {
+
+  const handleProgress = React.useContext(ProgressContext);
+
   const [ cookies , setCookie , removeCookie ] = useCookies (['profile','user']);
-  const handleLogout = () => {    // 모든 쿠키 삭제와 profile제거
-      removeCookie('profile');
-      removeCookie('user');
-      location.href = location.origin;
-  }
   // states
   const [snack, setSnack] = React.useState({open : false});
   const [savedSnack , setSavedSnack] = React.useState({open:false});
@@ -46,6 +45,7 @@ export default function ManagementTable() {
         console.log(`status : ${response.status} , data : ${JSON.stringify(response.data)}`);
           // 유저 확인됐고 테이블도 비어있지 않을 경우
           if (response.status===200 && response.data.headers) {
+            setTimeout(()=>{setSnack({open:true})},400);
             setState({
               columns : parseData(response.data.headers , response.data.groupings),
               data : response.data.data,
@@ -59,11 +59,9 @@ export default function ManagementTable() {
     }
   });
 
-  // events
   const handleDialogClose = () => {setDialog({open : false});};
-  const handleOnSave = () => {
-      // Material table 의 ref값에 접근해서 데이터 얻어오기
-      // tableRef.current.dataManager
+  const handleOnSave = (isAutoSave) => {
+      // tableRef.current.dataManager 의 ref에서 신뢰도있는 데이터 참조
       const data = [];
       const groupings = [];
       const headers = tableRef.current.dataManager.columns.reduce((obj,v,i)=>{
@@ -75,22 +73,17 @@ export default function ManagementTable() {
         const {tableData, ...rest} = v;
         data.push(rest);
       })
-      // console.log(` result : 
+      // console.log(` result :   // 로그
       //   ${JSON.stringify(data)}
       //   ${groupings}
       //   ${JSON.stringify(headers)}
       // `)
-      saveData(headers, groupings, data).then(result => {
-        if (result.result === 'success') {
-          setSavedSnack({open:true});
-        } else {
-          setErrorSnack({open:true});
-        }
-      });
+      saveData(headers, groupings, data);
+      if(!isAutoSave) setSavedSnack({open:true});
   }
-  React.useEffect(()=>{ // 최초렌더링시 도움말 Snack 출력
-    setTimeout(()=>{setSnack({open:true})},400);
-  },[]);
+  // React.useEffect(()=>{ // 최초렌더링시 도움말 Snack 출력
+    
+  // },[]);
 
   // effects
   React.useEffect(() => {   // window 더블클릭 이벤트 추가, 도움말 open
@@ -101,20 +94,26 @@ export default function ManagementTable() {
         handleOnSave();
       }
     }
+    
     window.addEventListener('keydown', onKeydown);
     window.addEventListener('dblclick', ondbClick);
   return () => {
       window.removeEventListener('dblclick', ondbClick);
       window.removeEventListener('keydown', onKeydown);
+      handleOnSave(true);
+      handleProgress('success');
   };
 }, []);
 
 // components
   const Margin = () => (<Box style={{height:'100px'}}></Box>);  // 여백
   return (
+    <React.Fragment>
+    <Loading isLoading={isLoading}/>
+    {
     state.defaultPage ?
       (<DefaultPage state={state} setState={setState}/>)
-      :
+    : 
     (<Box>
         <ManualDialog open={dialog.open} onClose={handleDialogClose}/>
     <Margin/>
@@ -179,5 +178,7 @@ export default function ManagementTable() {
     <CustomSnackbar open={errorSnack.open} onClose={()=>setErrorSnack({open:false})} 
     content='ERROR !' status="error"/>
     </Box>
-  ));
+    )}
+    </React.Fragment>
+  );
 }
