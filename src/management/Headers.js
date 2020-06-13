@@ -80,12 +80,12 @@ export default function Headers ({isLoading}) {
         getManagementTable().then(response => {
             console.log(`response : ${JSON.stringify(response)}`);
             if (response.status === 200) {
-                const groupingLength = response.data.groupings.length;
-                const groupings = [...response.data.groupings];
+                const groupingLength = response.data? response.data.groupings ? response.data.groupings.length : 0 : 0;
+                const groupings = response.data? response.data.groupings ? [...response.data.groupings] : [] : [];
                 for (let i = 0; i < 10 - groupingLength; i ++) {
                     groupings.push(false);
                 }
-                const headers = response.data.headers ? response.data.headers : {};
+                const headers = response.data? response.data.headers ? response.data.headers : {} : {};
                 const headersLength = Object.values(headers).length;
                 for (let i = headersLength; i < 10; i++) {
                     headers[`header${i}`] = '';
@@ -95,7 +95,7 @@ export default function Headers ({isLoading}) {
                 setData({headers, groupings})
             } else {
                 if (response.status === 204) {  // unauthorized
-                    setTimeout(handleLogout(), 3500);
+                    // setTimeout(handleLogout(), 3500);
                     setResultSnack({open : true,status:'error', content : `Please log in again.`});
                 } else {
                     setResultSnack({open : true,status:'error', content : `error (code : ${response.status})`});
@@ -104,7 +104,7 @@ export default function Headers ({isLoading}) {
         }).catch(err => {
             if(err) {
                 console.log(err);
-                setTimeout(handleLogout(), 3500);
+                // setTimeout(handleLogout(), 3500);
                 setResultSnack({open:true,status:'error', content:'Please log in again.'});
             }
         })}

@@ -44,7 +44,7 @@ export default function ManagementTable({isLoading}) {
       getManagementTable().then(response => {
         console.log(`status : ${response.status} , data : ${JSON.stringify(response.data)}`);
           // 유저 확인됐고 테이블도 비어있지 않을 경우
-          if (response.status===200 && response.data.headers) {
+          if (response.status===200) {
             setTimeout(()=>{setSnack({open:true})},400);
             setState({
               columns : parseData(response.data.headers , response.data.groupings),
