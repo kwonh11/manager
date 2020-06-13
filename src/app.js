@@ -88,7 +88,7 @@ export default function App() {
             </UserContext.Provider>
             <CustomSnackbar open={globalSnackbar.open} onClose={()=>setGlobalSnackbar({open:false})} 
             content={globalSnackbar.result==='error'? `Not saved.
-            Reason : Empty or more than 15 characters.` :' SAVED '} status={globalSnackbar.result}
+            Reason : Invalid input.` :' SAVED '} status={globalSnackbar.result}
             direction={{vertical:'top', horizontal:'right'}}/>
         </React.Fragment>
     )

@@ -91,7 +91,10 @@ export default function MenuList ({anchor , toggleDrawer, profile}) {
                 },1500);
             })
         } else {
-            console.log('불일치');
+            handleGlobalSnackbar({
+                open:true, 
+                result:'error'
+            });
         }
     }
     const [modal, setModal] = React.useState(false);
