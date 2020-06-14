@@ -72,12 +72,7 @@ export default function ManagementTable({isLoading}) {
       tableRef.current.dataManager.data.forEach((v,i)=>{
         const {tableData, ...rest} = v;
         data.push(rest);
-      })
-      // console.log(` result :   // 로그
-      //   ${JSON.stringify(data)}
-      //   ${groupings}
-      //   ${JSON.stringify(headers)}
-      // `)
+      });
       saveData(headers, groupings, data);
       if(!isAutoSave) setSavedSnack({open:true});
   }
@@ -127,7 +122,7 @@ export default function ManagementTable({isLoading}) {
       options={options} // 내보내기, 그루핑
       actions={[// 멀티 셀렉션 작업
         {
-            tooltip : 'Remove All Selected Users',
+            tooltip : 'Remove the Selected row(s)',
             icon : 'delete',
             onClick : (e , deletions) => {  // 선택한 체크박스에 대해 모두 삭제 진행
                 const data = [...state.data];

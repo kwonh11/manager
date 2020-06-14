@@ -95,7 +95,7 @@ export default function Headers ({isLoading}) {
                 setData({headers, groupings})
             } else {
                 if (response.status === 204) {  // unauthorized
-                    // setTimeout(handleLogout(), 3500);
+                    setTimeout(handleLogout(), 3500);
                     setResultSnack({open : true,status:'error', content : `Please log in again.`});
                 } else {
                     setResultSnack({open : true,status:'error', content : `error (code : ${response.status})`});
@@ -104,7 +104,7 @@ export default function Headers ({isLoading}) {
         }).catch(err => {
             if(err) {
                 console.log(err);
-                // setTimeout(handleLogout(), 3500);
+                setTimeout(handleLogout(), 3500);
                 setResultSnack({open:true,status:'error', content:'Please log in again.'});
             }
         })}
@@ -180,7 +180,7 @@ export default function Headers ({isLoading}) {
                         </Typography>
                         <Box color={Object.values(data.headers).every(v => v.length <= 15) ? 'blue' : 'red'}>
                         <Typography variant='subtitle2' color='initial'>
-                             not more than 15 characters and without spaces :) 
+                             Header should be less than 15 letters.
                         </Typography>
                         </Box>
                     </Box>
@@ -198,9 +198,11 @@ export default function Headers ({isLoading}) {
                 onChange={(e)=>handleInputChange(e,index)}
                 error={data.headers[`header${index}`].length > 15 ? true : false}
                 />
-                <Tooltip title="You can set grouping settings.
-When you set up grouping, you can manage tables by group.
-Do not use when unique values e.g.) Name, address, etc."
+                <Tooltip title="
+You can arrange the data with a valid header, 
+Unique values are not commonly used for this function in general.
+e.g.) name, address, mobile NO. etc.
+"
                  placement='right' enterDelay={200} leaveDelay={200}>
                     <Checkbox 
                     checked={data.groupings[index]} 
@@ -209,7 +211,7 @@ Do not use when unique values e.g.) Name, address, etc."
                     </Checkbox>
                </Tooltip>
                     {index===0? 
-                    <Box component='span' className={classes.description}>Enable Grouping!?</Box>
+                    <Box component='span' className={classes.description}> Grouping!?</Box>
                     : null}
                 </div>
             )})
@@ -223,8 +225,7 @@ Do not use when unique values e.g.) Name, address, etc."
              onClick={()=>handleSubmit(data.headers , data.groupings)}/>
         </Tooltip>
         <CustomSnackbar open={snack.open} onClose={()=>setSnack({open:false})} 
-        content={`Not more than 15 characters and without spaces,
-        Header must not be empty. :(`} status="error"/>
+        content={`Header should be less than 15 letters :(`} status="error"/>
         <CustomSnackbar open={resultSnack.open} onClose={()=>setResultSnack({open:false})} 
         content={resultSnack.content} status={resultSnack.status==='error'? 'error' : 'success'}/>
         </Box>

@@ -7,28 +7,24 @@ const useStyles = makeStyles((theme) => ({
     root: {
         display: 'flex',
         flexDirection:'row-reverse',
-        flexWrap: 'wrap',
-        justifyContent: 'space-evenly',
+        flexWrap: 'nowrap',
+        justifyContent: 'space-around',
         alignContent : 'center',
         height : '100vh',
         width : '90vw',
-        zIndex:0,
     },
     paper : {
-      maxWidth: 850,
-      minWidth: 350,
-      width : '50vw',
+      minWidth: 650,
+      width : '60vw',
       height : '70vh',
       margin : theme.spacing(4),
-      flex : 2,
   },
   text : {
-      maxWidth : 650,
-      minWidth : 225,
-      width : '30vw',
-      height : '50vh',
-      flex : 1,
-      alignSelf : 'center',
+    minWidth : 450,
+    width : '30vw',
+    height : '70vh',
+    alignSelf : 'center',
+    justifyContent : 'center'
   },
   }));
 
@@ -52,13 +48,13 @@ const useStyles = makeStyles((theme) => ({
                   style={{ transformOrigin: '0 0 0' }}
                   {...(grow ? { timeout: 1000 } : {})}
                 >
-                <Paper elevation={3} className={classes.paper}></Paper>
+                <Paper elevation={4} className={classes.paper}></Paper>
             </Grow>
             <Grow in={grow}
                  style={{ transformOrigin: '0 0 0' }}
-                 {...(grow ? { timeout: 1200 } : {})}
+                 {...(grow ? { timeout: 1500 } : {})}
                  >
-                <Paper elevation={1} className={classes.text}></Paper>
+                <Paper elevation={4} className={classes.text}></Paper>
             </Grow>
         </div>
     )

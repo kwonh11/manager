@@ -26,18 +26,17 @@ import {AddBox} from '@material-ui/icons';
         color='primary'
         size='large'
         disabled
-        style={{fontWeight:'bolder'}}
-        endIcon={<AddBox/>}>
-          {`No Record to display,
-          Click the Button `}
+        style={{fontWeight:'bolder'}}>
+          {`No Records to display`}
         </Button>
         <Button variant='text'
         color='primary'
         size='large'
         disabled
+        endIcon={<AddBox/>}
         style={{fontWeight:'bolder'}}
         >
-          {`on the right-top`}
+          {`Click the plus icon on the right above for a new record. `}
         </Button>
         </Box>
         )

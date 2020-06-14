@@ -25,7 +25,7 @@ export default function ManualDialog (props) {
         {icon : 'fact_check' , description : ' ② Check the number of the rows selected.'},
         {icon : 'delete' , description : ' ③ Click the Bin icon on the right above.'},
         {icon : 'playlist_add_check' , description : 'Follow the steps below to [Edit] headers.'},
-        {icon : 'menu' , description : ' ① Open the MYPAGE'},
+        {icon : 'menu' , description : ' ① Open MYPAGE'},
         {icon : 'create' , description : ' ② Click the Pencil icon'},
     ]
 

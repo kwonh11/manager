@@ -21,6 +21,7 @@
     "jwt-decode": "^2.2.0",
     "material-table": "^1.58.0",
     "mui-datatables": "^2.14.0",
+    "nuka-carousel": "^4.7.0",
     "prop-types": "^15.7.2",
     "qs": "^6.9.4",
     "react": "^16.13.1",

@@ -33,11 +33,14 @@ function Copyright() {
       textAlign:"center",
     },
     arrow : {
-      width : '8vw',
-      height : '8vh',
+      width : '9vw',
+      height : '9vh',
+      minWidth : '70px',
+      minHeight : '70px',
       alignSelf : 'center',
       background :`no-repeat center/80% url(${arrow})`,
       marginBottom:'2vh',
+      marginTop : '2vh',
       backgroundSize:'contain',
     },
   }));

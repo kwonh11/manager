@@ -1,22 +1,17 @@
 import { makeStyles } from '@material-ui/core/styles';
-import { Box } from "@material-ui/core";
-import {Fade} from '@material-ui/core';
+import { Box , Fade } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
     root: {
       margin:0,
-      padding:0,
+      padding:'1vw',
       display: 'flex',
       flexWrap: 'wrap',
-      height : '13vh',
       width : '100%',
       justifyContent : 'center',
+      flexDirection : 'column',
       alignItems : 'center',
-      background: 'rgb(191,185,185)',
-      background: 'linear-gradient(160deg, rgba(191,185,185,1) 26%, rgba(47,135,166,1) 77%)',
-      zIndex:100,
       margin:'auto',
-      opacity:0.7,
     },
 }));
 
@@ -35,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
     }, []);
 
     return (
-      <Fade in={fade} timeout={{enter:1000, exit:800}}>
+      <Fade in={fade} timeout={{enter:2000, exit:800}}>
         <Box className={classes.root} boxShadow={4} ref={domRef}>
             {children}
         </Box>

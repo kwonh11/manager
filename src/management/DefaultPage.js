@@ -10,7 +10,8 @@ const useStyles = makeStyles(theme => ({
         justifyContent : 'center',
         alignItems : 'center',
         flexDirection : 'column',
-        backgroundImage : `url(${background})`
+        backgroundImage : `url(${background})`,
+        color:'white',
     },
     button : {
         fontWeight : 'bolder',
@@ -66,14 +67,12 @@ export default function DefaultPage ({state , setState, match}) {
     return (
     <Fade in={fade} timeout={{enter : 800, exit:500}}>
         <Box className={classes.container}>
-            <Typography variant='h1' color='textSecondary'>
+            <Typography variant='h1' color='initial' style={{textShadow:'5px 1.5px 1.5px gray'}}>
                 Management Table
             </Typography>
-            <Typography variant='subtitle2' gutterBottom> 
-                
-                손쉽게 사용할 있는 데이터 테이블입니다.
-                처음이라면 DEMO 를 체험해보거나 바로 시작해볼 수 있습니다.
-                
+            <Typography variant='subtitle2' gutterBottom style={{textShadow:'2px 2px 1px black'}}> 
+                You may try the DEMO if this your first time, 
+                or get started right away!
             </Typography>
             <Fade in={fade2} timeout={{enter : 3000, exit:500}}>
                 <Box className={classes.buttonContainer}>

@@ -164,13 +164,13 @@ export default function MenuList ({anchor , toggleDrawer, profile}) {
                                 <DeleteForever color='secondary' fontSize='large'/>
                             </IconButton>
                             <Typography id="modal-title" variant='button' display='block' style={{fontWeight:'bolder'}}>
-                                 Caution: Permanently delete.
+                                 Caution : permanent deletion
                             </Typography>
                         </Box>
                         <Box className={classes.modalColBox}>
                             <Typography id="modal-contents" variant='body1' style={{fontWeight:'bold'}}>
                                 {`All data will be deleted and cannot be recovered.
-                                Please enter the email correctly to continue.`}
+                                Please enter your email correctly to continue.`}
                             </Typography>
                             <Typography variant='caption'>{profile.email}</Typography>
                         </Box>
