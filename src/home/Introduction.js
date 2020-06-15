@@ -55,8 +55,8 @@ export default function Introduction () {
         <Fade in={grow}  timeout={{enter:3000, exit:800}}>
         <Box className={classes.root} ref={domRef}>
             <Grow in={grow} 
-                  style={{ transformOrigin: '0 0 0' }}
-                  {...(grow ? { timeout: {appear : 2000} } : {})}
+                  style={{ transformOrigin: '50% 100%'}}
+                  {...(grow ? { timeout: {appear : 1500 , enter : 1500 , exit : 1000} } : {})}
                 >
                 <Paper elevation={4} className={classes.paper} >
                   {/* image carousel */}
@@ -69,8 +69,8 @@ export default function Introduction () {
                 </Paper>
             </Grow>
             <Grow in={grow}
-                 style={{ transformOrigin: '0 0 0' }}
-                 {...(grow ? { timeout: {appear : 2500}} : {})}
+                 style={{ transformOrigin: '50% 100%'}}
+                 {...(grow ? { timeout: {appear : 2000 , enter : 1500 , exit : 1000}} : {})}
                  >
                 <Paper elevation={4} className={classes.textPaper}>
                     {/* list */}
