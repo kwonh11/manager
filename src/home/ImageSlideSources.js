@@ -4,36 +4,36 @@ import startRightAway from "../images/start-right-away.png";
 import makeHeaders from "../images/make-headers.png";
 import handleTable from "../images/handle-table.png";
 import useMymenu from "../images/mymenu.png";
-
 export default [
     {
-        name : '#1 Sign in with Google',
+        name : 'Sign in with Google',
         src : `${easyLogin}`,
-        description : 'Sign in with google'
+        description : 'Sign in with google',
     },
     {
-        name : '#2 Move on to management page',
+        name : 'Move on to management page',
         src : `${linkManagementPage}`,
-        description : 'Move on to management page'
+        description : 'Move on to management page',
     },
     {
-        name : '#3 Click the blue button',
+        name : 'Click the blue button',
         src : `${startRightAway}`,
-        description : 'click "get started right away" button'
+        description : 'click "get started right away" button',
     },
     {
-        name : '#4 Make Headers',
+        name : 'Make Headers',
         src : `${makeHeaders}`,
-        description : 'make headers'
+        description : 'make headers',
+
     },
     {
-        name : '#5 Create, Edit, Remove table records',
+        name : 'Create, Edit, Remove table records',
         src : `${handleTable}`,
-        description : 'handle table'
+        description : 'handle table',
     },
     {
-        name : '#6 Use mymenu to handle data',
+        name : 'Use mymenu to handle data',
         src : `${useMymenu}`,
-        description : 'use mymenu'
+        description : 'use mymenu',
     },
 ];

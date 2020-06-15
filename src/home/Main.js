@@ -41,14 +41,7 @@ export default function Main () {
             <Typography variant='h1' color='inherit' style={{textShadow:'5px 1.5px 1.5px gray'}}>
                 {isFirstRef.current ? 'WELCOME' : 'Ready to start?'}
             </Typography>
-            {/* {
-            isFirstRef.current && 
-            (<Typography variant='h6' color='inherit' style={{textShadow:'3px 1px 1px gray'}}>
-                
-            </Typography>)
-            } */}
                 {isFirstRef.current? null : (<StartButton/>)}
-            {/* !isFirstRef 일 시 바로가기 버튼 추가 */}
         </Box>
     </Fade>
     )

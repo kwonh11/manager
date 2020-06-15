@@ -1,73 +1,48 @@
 import { makeStyles } from '@material-ui/core/styles';
-import { Grow , Box, Typography , Paper, Avatar } from "@material-ui/core";
-import Crossline from './Crossline';
+import { Grow , Box, Paper,Fade } from "@material-ui/core";
 import ImageCarousel from "./Carousel";
-import guideImage from '../images/guide.png';
 import imageList from './ImageSlideSources';
-
+import ListCrouselDescription from './ListCarouselDescription';
+import background from "../images/desk.jpg";
 const useStyles = makeStyles((theme) => ({
     root: {
         display: 'flex',
         flexDirection:'column',
-        flexWrap: 'wrap',
-        justifyContent: 'space-around',
-        alignContent : 'center',
+        justifyContent: 'center',
+        alignItems:'center',
         height : '100vh',
         width : '100vw',
+        backgroundImage : `url(${background})`,
+        backgroundSize : 'cover',
     },
     paper : {
         minWidth: 750,
-        width : '65vw',
-        height : '80vh',
+        maxWidth: '1000px',
+        width : '70vw',
+        height : '65vh',
         margin : theme.spacing(4),
+        backgroundColor : 'inherit'
     },
     textPaper : {
         minWidth : 350,
-        width : '25vw',
-        height : '80vh',
+        width : '70vw',
         alignSelf : 'center',
-        justifyContent : 'center'
-    },
-    bigAvatar : {
-        width : theme.spacing(12),
-        height : theme.spacing(12),
-        color: '#fff',
-        backgroundColor: "green",
-    },
-    textWithShadow : {
-      color:'#585656',
-      fontWeight:'bolder',
-      fontSize:'3.5rem',
-      marginLeft:'2vw',
-      textShadow: '4px 1.5px 1.5px grey'
-    },
-    logoBox : {
-      display : 'flex',
-      justifyContent : 'center',
-      alignItems : 'center',
-      flexDirection : 'row'
-    },
-    descriptionBox : {
-      display:'flex',
-      flexDirection : 'column',
-      justifyContent : 'center',
-      alignItems : 'center',
-      maxWidth : '50vw',
-      margin : '0 0 0 3vw'
+        justifyContent : 'center',
+        backgroundColor:'inherit'
     },
   }));
 
 export default function Introduction () {
     const [grow, setGrow] = React.useState(false);
     const [currentSlide, setCurrentSlide] = React.useState(0);
-    const [autoPlay, setAutoPlay] = React.useState(false);
+    const [stepper, setStepper] = React.useState(0);
     const classes = useStyles();
     const domRef = React.useRef();
-
+    console.log(`currentSlide : ${currentSlide}`)
     React.useEffect(() => {
       const observer = new IntersectionObserver(entries => {
         entries.forEach(entry => setGrow(entry.isIntersecting));
-        setAutoPlay(true);
+        setCurrentSlide(0);
       },{   // options
           rootMargin : '-70px 0px'
         });
@@ -77,36 +52,33 @@ export default function Introduction () {
 
     return (
       <React.Fragment>
-        <Crossline>
-            <Box className={classes.logoBox}>
-            <Avatar alt='help' src={guideImage} className={classes.bigAvatar}>
-            </Avatar>
-              <Typography variant='button' className={classes.textWithShadow}> Management App </Typography>
-            </Box>
-            <Box className={classes.descriptionBox}>
-              <Typography variant='subtitle2'>An application that you can easily create & design your own data.</Typography>
-              <Typography variant='subtitle2'>Get started with your Google account!</Typography>
-              <Typography variant='subtitle2'>This app will not keep any personal information.</Typography>
-            </Box>
-        </Crossline>
+        <Fade in={grow}  timeout={{enter:3000, exit:800}}>
         <Box className={classes.root} ref={domRef}>
             <Grow in={grow} 
                   style={{ transformOrigin: '0 0 0' }}
-                  {...(grow ? { timeout: 1000 } : {})}
+                  {...(grow ? { timeout: {appear : 2000} } : {})}
                 >
                 <Paper elevation={4} className={classes.paper} >
-                  <ImageCarousel list={imageList} setCurrentSlide={setCurrentSlide} autoPlay={autoPlay}/>
+                  {/* image carousel */}
+                  <ImageCarousel 
+                  list={imageList} 
+                  currentSlide={currentSlide} 
+                  setCurrentSlide={setCurrentSlide} 
+                  setStepper={setStepper} 
+                  />
                 </Paper>
             </Grow>
             <Grow in={grow}
                  style={{ transformOrigin: '0 0 0' }}
-                 {...(grow ? { timeout: 1500 } : {})}
+                 {...(grow ? { timeout: {appear : 2500}} : {})}
                  >
                 <Paper elevation={4} className={classes.textPaper}>
-                    {currentSlide}
+                    {/* list */}
+                    <ListCrouselDescription stepper={stepper} ></ListCrouselDescription>
                 </Paper>
             </Grow>
         </Box>
+        </Fade>
       </React.Fragment>
     )
 }

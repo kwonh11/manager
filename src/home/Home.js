@@ -4,12 +4,10 @@ import Introduction from "./Introduction";
 import Introduction2 from "./Introduction2";
 import Main from './Main';
 import Loading from "../customHook/Loading";
-
 const useStyles = makeStyles((theme) => ({
     root: {
       display: 'flex',
       flexWrap: 'wrap',
-      height : '350vh',
       justifyContent : 'center',
     },
   }));
@@ -20,8 +18,8 @@ export default function Home({isLoading}) {
             <div className={classes.root}>
                 <Loading isLoading={isLoading}/>
                 <Main/>
-                <Introduction/>
-                <Introduction2/>
+                  <Introduction2/>
+                  <Introduction/>
             </div>
     )
 }
