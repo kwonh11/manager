@@ -9,6 +9,7 @@ const useStyles = makeStyles((theme) => ({
       display: 'flex',
       flexWrap: 'wrap',
       justifyContent : 'center',
+      backgroundColor: 'white'
     },
   }));
 
@@ -18,8 +19,8 @@ export default function Home({isLoading}) {
             <div className={classes.root}>
                 <Loading isLoading={isLoading}/>
                 <Main/>
-                  <Introduction2/>
                   <Introduction/>
+                  <Introduction2/>
             </div>
     )
 }

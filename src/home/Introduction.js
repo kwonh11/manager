@@ -3,7 +3,7 @@ import { Grow , Box, Paper,Fade } from "@material-ui/core";
 import ImageCarousel from "./Carousel";
 import imageList from './ImageSlideSources';
 import ListCrouselDescription from './ListCarouselDescription';
-import background from "../images/desk.jpg";
+import background from '../images/background1.jpg';
 const useStyles = makeStyles((theme) => ({
     root: {
         display: 'flex',

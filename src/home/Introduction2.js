@@ -1,10 +1,10 @@
 
 import { Paper, Box, Grow, Avatar, Typography,Fade , Slide } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import guideImage from '../images/moon.png';
+import moonImage from '../images/moon.png';
 import Crossline from './Crossline';
-import ProjectDescription from './Description'
-
+import ProjectDescription from './Description';
+import background from '../images/black.png';
 const useStyles = makeStyles((theme) => ({
     root: {
       display: 'flex',
@@ -13,7 +13,8 @@ const useStyles = makeStyles((theme) => ({
       alignItems:'center',
       height : '100vh',
       width : '100vw',
-      backgroundColor : 'black'
+      backgroundImage : `url(${background})`,
+      backgroundSize : 'cover'
     },
     logoBox : {
       display : 'flex',
@@ -24,8 +25,6 @@ const useStyles = makeStyles((theme) => ({
     bigAvatar : {
       width : theme.spacing(12),
       height : theme.spacing(12),
-      color: '#fff',
-      backgroundColor: "green",
     },
     textWithShadow : {
       color:'#fff',
@@ -47,15 +46,12 @@ const useStyles = makeStyles((theme) => ({
 
   export default function Introduction () {
     const [grow, setGrow] = React.useState(false);
-    const [rise, setRise] = React.useState(false);
     const classes = useStyles();
     const domRef = React.useRef();
     React.useEffect(() => {
       const observer = new IntersectionObserver(entries => {
-        entries.forEach(entry => {
-          setGrow(entry.isIntersecting);
-        } 
-      )},{   // options
+        entries.forEach(entry => setGrow(entry.isIntersecting));
+      },{   // options
           rootMargin : '-70px 0px'
       });
       observer.observe(domRef.current);
@@ -63,12 +59,12 @@ const useStyles = makeStyles((theme) => ({
     }, []);
     return (
       <React.Fragment>
-        <Box className={classes.root} ref={domRef}>
         <Fade in={grow}  timeout={{enter:2000, exit:800}}>
+        <Box className={classes.root} ref={domRef}>
         <Crossline>
             <Box className={classes.logoBox}>
-            <Fade in={grow} {...(grow? {timeout:{enter:3000, exit:800}} : {})}>
-              <Avatar alt='help' src={guideImage} className={classes.bigAvatar}/>
+            <Fade in={grow} {...(grow? {timeout:{enter:5000, exit:800}} : {})}>
+              <Avatar alt='help' src={moonImage} className={classes.bigAvatar}/>
             </Fade>
               <Typography variant='button' className={classes.textWithShadow}> Management App </Typography>
             </Box>
@@ -78,9 +74,9 @@ const useStyles = makeStyles((theme) => ({
               <Typography variant='subtitle2'>This app will not keep any personal information.</Typography>
             </Box>
         </Crossline>
-        </Fade>
           <ProjectDescription/>
         </Box>
+        </Fade>
       </React.Fragment>
     )
 }

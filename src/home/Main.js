@@ -1,8 +1,8 @@
 import { makeStyles } from '@material-ui/core/styles';
 import { Typography, Box } from "@material-ui/core";
-import backgroundImage from '../images/background1.jpg';
 import { Fade } from "@material-ui/core";
 import StartButton from "./StartButton";
+import background from "../images/desk.jpg";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -13,7 +13,7 @@ const useStyles = makeStyles((theme) => ({
         alignContent : 'center',
         height : '100vh',
         width : '100%',
-        backgroundImage:`url(${backgroundImage})`,
+        backgroundImage:`url(${background})`,
         backgroundSize : 'cover',
         color : 'white'
     },

@@ -80,8 +80,8 @@ export default function App() {
                     <Route path='/management' render={()=> <Management isLoading={isLoading}/>}></Route>
                     <Route path='/headers' render={()=> <Headers isLoading={isLoading}/>}></Route>
                 </Switch>
+                    <Route path='/' render={(props)=><Footer {...props}/>}></Route>
                 </BrowserRouter>
-            <Footer/>
             </GlobalSnackbarContext.Provider>
             </ProgressContext.Provider>
             </LogoutContext.Provider>
