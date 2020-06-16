@@ -44,7 +44,7 @@ export default function ManagementTable({isLoading}) {
       getManagementTable().then(response => {
         console.log(`status : ${response.status} , data : ${JSON.stringify(response.data)}`);
           // 유저 확인됐고 테이블도 비어있지 않을 경우
-          if (response.status===200) {
+          if (response.status===200 && response.data.headers) {
             setTimeout(()=>{setSnack({open:true})},400);
             setState({
               columns : parseData(response.data.headers , response.data.groupings),
@@ -59,6 +59,7 @@ export default function ManagementTable({isLoading}) {
     }
   });
 
+  // events
   const handleDialogClose = () => {setDialog({open : false});};
   const handleOnSave = (isAutoSave) => {
       // tableRef.current.dataManager 의 ref에서 신뢰도있는 데이터 참조

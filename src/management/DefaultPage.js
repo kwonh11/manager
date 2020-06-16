@@ -34,23 +34,23 @@ const useStyles = makeStyles(theme => ({
 }));
 const defaultData = {
     columns : [
-      { title: 'Name', field: 'name' , grouping:false},
-      { title: 'Surname', field: 'surname' },
-      { title: 'Birth Year', field: 'birthYear' },
-      { title: 'Phone' , field:'phone', grouping:false},
+      { title: 'Name', field: 'Name' , grouping:false},
+      { title: 'Surname', field: 'Surname' },
+      { title: 'Birth Year', field: 'Birth Year' },
+      { title: 'Phone' , field:'Phone', grouping:false},
       {
         title: 'Gender',
-        field: 'gender',
+        field: 'Gender',
       },
-      { title: 'Memo' , field:'memo'}
+      { title: 'Memo' , field:'Memo'}
     ],
     data : [
-      { name: 'Mehmet', surname: 'Baran', birthYear: 1983, phone:'01046509995' ,gender: 1 , memo:''},
-      { name: 'Adam', surname: 'Adam', birthYear: 1984, phone:'01046509795' ,gender: 2 , memo:''},
-      { name: 'Mehmet', surname: 'Atom', birthYear: 1985, phone:'01046509695' ,gender: 1 , memo:''},
-      { name: 'mul', surname: 'Kongna', birthYear: 1986, phone:'01046509195' ,gender: 1 , memo:''},
-      { name: 'Jack', surname: 'Jack', birthYear: 1987, phone:'01046509295' ,gender: 2 , memo:''},
-      { name: 'Bob', surname: 'Bob', birthYear: 1988, phone:'01046509395' ,gender: 2 , memo:''},
+      { "Name": 'Mehmet', 'Surname': 'Baran', "Birth Year": 1983, "Phone":'01046509995' ,"Gender": 1 , "Memo":''},
+      { "Name": 'Adam', 'Surname': 'Adam', "Birth Year": 1984, "Phone":'01046509795' ,"Gender": 2 , "Memo":''},
+      { "Name": 'Mehmet', 'Surname': 'Atom', "Birth Year": 1985, "Phone":'01046509695' ,"Gender": 1 , "Memo":''},
+      { "Name": 'mul', 'Surname': 'Kongna', "Birth Year": 1986, "Phone":'01046509195' ,"Gender": 1 , "Memo":''},
+      { "Name": 'Jack', 'Surname': 'Jack', "Birth Year": 1987, "Phone":'01046509295' ,"Gender": 2 , "Memo":''},
+      { "Name": 'Bob', 'Surname': 'Bob', "Birth Year": 1988, "Phone":'01046509395' ,"Gender": 2 , "Memo":''},
     ]
   }
 export default function DefaultPage ({state , setState, match}) {
