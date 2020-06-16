@@ -6,7 +6,7 @@ import whiteArrow from '../images/white-arrow.png';
 import arrow from '../images/arrow.png';
 import {Box} from '@material-ui/core';
 import {Tooltip} from '@material-ui/core';
-
+import managementBackground from '../images/management-background.jpg';
 function Copyright() {
     return (
       <Typography variant="body2" color="textSecondary">
@@ -35,11 +35,9 @@ function Copyright() {
       color : 'white'
     },
     arrow : {
-      width : '7vw',
-      height : '7vw',
-      padding : '4vw',
-      minWidth : '70px',
-      minHeight : '70px',
+      width : '4vw',
+      height : '4vw',
+      padding : '3vw',
       alignSelf : 'center',
       marginBottom:'2vh',
       marginTop : '2vh',
@@ -61,19 +59,30 @@ function Copyright() {
       e.target.style.cursor = 'pointer';
     }
     return (
-      <Box className={classes.root} style={location.pathname === '/' ? {background : `linear-gradient(black, #eeeeee)`} : null}>
+      <React.Fragment>
+        {location.pathname === '/board'? null : (
+          <React.Fragment>
+      <Box className={classes.root} style={
+        location.pathname === '/' ? 
+        {background : `linear-gradient(black, #eeeeee)`} 
+        : 
+        {backgroundImage : `url(${managementBackground})`, backgroundSize : 'auto', transform: `scaleY(-1)`}}>
         <Tooltip title="Move to Top" aria-label="move-to-top" placement="top" enterDelay={350} leaveDelay={150}>
           <Box className={classes.arrow} style={
           location.pathname === '/'? 
           {background :`no-repeat center/80% url(${whiteArrow})`}
-          : {background :`no-repeat center/80% url(${arrow})`}}
+          : 
+          {background :`no-repeat center/80% url(${arrow})`, transform:`rotate(180deg)`}}
           onClick={scrollToTop} onMouseOver={(e)=>transition(e)}/>
         </Tooltip>
+      </Box>
         <footer className={classes.footer}>
           <Container maxWidth="sm">
             <Copyright style={{fontWeight : 'bolder'}}/>
           </Container>
         </footer>
-      </Box>
+        </React.Fragment>
+        )}
+        </React.Fragment>
     );
   }
