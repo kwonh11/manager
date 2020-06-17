@@ -21,12 +21,13 @@ export default function DescriptionList ({stepper}) {
                 {
                     slideSource.map((item,index)=>{
                         return (
-                    <Step completed={index < stepper} key={index}>
-                        <StepLabel>
-                            <Typography variant='caption' style={{fontWeight:'bolder'}}>{item.name}</Typography>
-                        </StepLabel>
-                    </Step>
-                    
+                        <Step completed={index < stepper} key={index}>
+                            <StepLabel>
+                                <Typography variant='caption' style={{fontWeight:'bolder'}}>
+                                    {item.name}
+                                </Typography>
+                            </StepLabel>
+                        </Step>
                     )})
                 }
             </Stepper>
