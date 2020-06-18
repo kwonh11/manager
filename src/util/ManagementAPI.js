@@ -25,6 +25,7 @@ export const saveData = (headers, groupings, data) => {
         groupings,
         data
     },{withCredentials:true}).then(res => {
+        if (res.status === 400) return Promise.reject(400);
         return Promise.resolve(res.data)
     }));
 }

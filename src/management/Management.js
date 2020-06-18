@@ -23,7 +23,6 @@ import Loading from "../customHook/Loading";
 export default function ManagementTable({isLoading}) {
 
   const handleProgress = React.useContext(ProgressContext);
-
   const [ cookies , setCookie , removeCookie ] = useCookies (['profile']);
   // states
   const [snack, setSnack] = React.useState({open : false});
@@ -72,7 +71,9 @@ export default function ManagementTable({isLoading}) {
         const {tableData, ...rest} = v;
         data.push(rest);
       });
-      saveData(headers, groupings, data);
+      saveData(headers, groupings, data).catch(err => {
+        if(err) throw new Error(err);
+      });
       if(!isAutoSave) setSavedSnack({open:true});
   }
   

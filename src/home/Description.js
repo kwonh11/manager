@@ -1,5 +1,5 @@
 import { makeStyles } from '@material-ui/core/styles';
-import { Grow, Box, Fade, Typography, Divider} from '@material-ui/core';
+import { Grow, Box, Typography} from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
     root : {

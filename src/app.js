@@ -10,6 +10,8 @@ import qs from 'qs';
 import {useCookies} from 'react-cookie'
 import { getTokenAndProfile } from "./util/LoginAPI";
 import CustomSnackbar from './customHook/SnackBar';
+import ErrorFallback from './customHook/ErrorFallback';
+import { ErrorBoundary } from "react-error-boundary";
 
 // 컨텍스트 목록
 export const UserContext = React.createContext();
@@ -41,11 +43,11 @@ export default function App() {
         if(id_token) {
             console.log('fetch API 실행');
             getTokenAndProfile(id_token).then(data => {
-                const {name ,email, picture} = data;
                 console.log(`response data : ${JSON.stringify(data)}`);
+                const {name ,email, picture} = data;
                 setCookie("profile",{name , email, picture},{path:"/" , maxAge : 7200});  // maxAge : 2시간
             }).catch(err => {
-                console.log(`error occured : ${err}`)
+                throw new Error('Login Failed. Please authorize the use of cookies in your browser.');
             })
         }
     },[id_token]);
@@ -58,29 +60,38 @@ export default function App() {
     },[cookies.profile]);
     return (
         <React.Fragment>
+            <ErrorBoundary
+            FallbackComponent={ErrorFallback}
+            onError={(error, componentStack)=>{
+                console.log(`error : ${error}
+                componentStack : ${componentStack}`);
+            }}
+            onReset={()=>location.replace(location.origin)}
+            >
             <UserContext.Provider value={profile || {name : ''}}>          {/* 유저 프로필 컨텍스트    */}
             <LogoutContext.Provider value={setProfile}>   {/* 로그아웃 이벤트 컨텍스트   */}
-            <ProgressContext.Provider value={(result)=>handleBeforeunload(result)}>
-            <GlobalSnackbarContext.Provider value={setGlobalSnackbar}>
-            <CssBaseline/>
-                <BrowserRouter>
-                <Nav/>
-                <Switch>
-                    <Route exact path='/' render={()=><Home isLoading={isLoading}/>}></Route>
-                    <Route path='/board' render={()=><Board isLoading={isLoading}/>}></Route>
-                    <Route path='/management' render={()=> <Management isLoading={isLoading}/>}></Route>
-                    <Route path='/headers' render={()=> <Headers isLoading={isLoading}/>}></Route>
-                </Switch>
-                    <Route path='/' render={(props)=><Footer {...props}/>}></Route>
-                </BrowserRouter>
+            <ProgressContext.Provider value={(result)=>handleBeforeunload(result)}>  {/* 로딩 컨텍스트   */}
+            <GlobalSnackbarContext.Provider value={setGlobalSnackbar}>  {/* 에러 스낵바 컨텍스트   */}
+                <CssBaseline/>
+                    <BrowserRouter>
+                    <Nav/>
+                    <Switch>
+                        <Route exact path='/' render={()=><Home isLoading={isLoading}/>}></Route>
+                        <Route path='/board' render={()=><Board isLoading={isLoading}/>}></Route>
+                        <Route path='/management' render={()=> <Management isLoading={isLoading}/>}></Route>
+                        <Route path='/headers' render={()=> <Headers isLoading={isLoading}/>}></Route>
+                    </Switch>
+                        <Route path='/' render={(props)=><Footer {...props}/>}></Route>
+                    </BrowserRouter>
             </GlobalSnackbarContext.Provider>
             </ProgressContext.Provider>
             </LogoutContext.Provider>
             </UserContext.Provider>
-            <CustomSnackbar open={globalSnackbar.open} onClose={()=>setGlobalSnackbar({open:false})} 
-            content={globalSnackbar.result==='error'? `Not saved.
-            Reason : Invalid input.` :' SAVED '} status={globalSnackbar.result}
-            direction={{vertical:'top', horizontal:'right'}}/>
+                <CustomSnackbar open={globalSnackbar.open} onClose={()=>setGlobalSnackbar({open:false})} 
+                content={globalSnackbar.result==='error'? `Not saved.
+                Reason : Invalid input.` :' SAVED '} status={globalSnackbar.result}
+                direction={{vertical:'top', horizontal:'right'}}/>
+            </ErrorBoundary>
         </React.Fragment>
     )
 }

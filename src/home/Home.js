@@ -16,11 +16,11 @@ const useStyles = makeStyles((theme) => ({
 export default function Home({isLoading}) {
     const classes = useStyles();
     return (
-            <div className={classes.root}>
-                <Loading isLoading={isLoading}/>
-                <Main/>
-                  <Introduction/>
-                  <Introduction2/>
-            </div>
+          <div className={classes.root}>
+              <Loading isLoading={isLoading}/>
+              <Main/>
+                <Introduction/>
+                <Introduction2/>
+          </div>
     )
 }

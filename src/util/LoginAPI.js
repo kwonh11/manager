@@ -7,9 +7,7 @@ export const redirectGoogleLogin = () => axios.get(`${serverURL}/login`).then(re
 export const getTokenAndProfile = (token) => {
     return axios.post(`${serverURL}/login`, {token} ,{
         withCredentials : true,
-    }).then(response=>{
-    Promise.resolve(response.data)
-    });
+    }).then(response=>Promise.resolve(response.data));
 }
 
 

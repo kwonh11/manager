@@ -80,15 +80,16 @@ export default function MenuList ({anchor , toggleDrawer, profile}) {
     const handleInputChange = (e) => setEmailInput(e.target.value);
     const handleOnSubmit = () => {
         if (emailInput === profile.email) {
-            console.log('일치');
             saveData({},[],[{}]).then(data => {
                 handleGlobalSnackbar({
                     open:true, 
                     result: data.result === 'success' ? 'success' : 'error'
                 });
                 setTimeout(()=>{
-                    location.reload(true);
+                    location.replace(location.origin);
                 },1500);
+            }).catch(err => {
+                throw new Error (err);
             })
         } else {
             handleGlobalSnackbar({
