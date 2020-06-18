@@ -4,6 +4,8 @@ import Introduction from "./Introduction";
 import Introduction2 from "./Introduction2";
 import Main from './Main';
 import Loading from "../customHook/Loading";
+import PropTypes from 'prop-types';
+
 const useStyles = makeStyles((theme) => ({
     root: {
       display: 'flex',
@@ -23,4 +25,8 @@ export default function Home({isLoading}) {
                 <Introduction2/>
           </div>
     )
+}
+
+Home.propTypes = {
+  isLoading : PropTypes.bool
 }

@@ -1,6 +1,7 @@
 import Carousel from 'nuka-carousel';
 import { Typography, Box } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
+import PropTypes from 'prop-types';
 
 const useStyles = makeStyles((theme) => ({
     textContainer : {
@@ -72,4 +73,10 @@ export default function ImageCarousel (props) {
         }
     </Carousel>
         );
+}
+
+ImageCarousel.propTypes = {
+    setStepper : PropTypes.func.isRequired,
+    currentSlide : PropTypes.number.isRequired,
+    setCurrentSlide : PropTypes.func.isRequired
 }

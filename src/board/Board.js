@@ -1,7 +1,9 @@
 
 import Loading from "../customHook/Loading";
-import { Box, Button, Fade, Paper, Typography,Container, TextField } from "@material-ui/core";
+import { Box, Paper, Typography, TextField } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
+import PropTypes from 'prop-types';
+
 const useStyles = makeStyles(theme => ({
     container : {
         width : '100%',
@@ -28,7 +30,9 @@ const useStyles = makeStyles(theme => ({
         marginTop:'5vh'
     }
 }));
+
 export default function Board({isLoading}) {
+
     const classes = useStyles();
     const inputRef = React.useRef();
     React.useEffect(()=>{
@@ -67,4 +71,8 @@ export default function Board({isLoading}) {
         </Box>
         </React.Fragment>
     )
+}
+
+Board.propTypes = {
+    isLoading : PropTypes.bool
 }

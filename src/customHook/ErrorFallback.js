@@ -1,5 +1,6 @@
 import { Box, Paper,Typography, Button } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
+import PropTypes from 'prop-types';
 
 const useStyle = makeStyles(theme => ({
     root : {
@@ -63,4 +64,8 @@ export default function ErrorFallback ({error, componentStack, resetErrorBoundar
             </Paper>
         </Box>
     )
+}
+
+ErrorFallback.propTypes = {
+    resetErrorBoundary : PropTypes,
 }

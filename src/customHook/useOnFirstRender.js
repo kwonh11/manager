@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 
 // contstructor 훅
 export default function useOnFirstRender (func) {
@@ -6,4 +7,7 @@ export default function useOnFirstRender (func) {
         isFirstRef.current = false;
         func();
     }
+}
+useOnFirstRender.propTypes = {
+    func : PropTypes.func
 }

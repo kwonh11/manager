@@ -10,7 +10,9 @@ import {redirectGoogleLogin} from '../util/LoginAPI';
 import {Edit, Info, DeleteForever, Warning} from '@material-ui/icons'
 import { Link } from 'react-router-dom';
 import { saveData } from "../util/ManagementAPI";
-import {GlobalSnackbarContext} from '../app'
+import {GlobalSnackbarContext} from '../app';
+import PropTypes from 'prop-types';
+
 const useStyles = makeStyles(theme => ({
     list : {
         width : '23vw',
@@ -191,4 +193,10 @@ export default function MenuList ({anchor , toggleDrawer, profile}) {
           </List>
       </div>
     )
+}
+
+MenuList.propTypes = {
+    anchor : PropTypes.string.isRequired,
+    toggleDrawer : PropTypes.func.isRequired,
+    profile : PropTypes.object.isRequired
 }

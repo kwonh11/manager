@@ -11,6 +11,7 @@ import {useCookies} from 'react-cookie';
 import CustomSnackbar from '../customHook/SnackBar';
 import Loading from "../customHook/Loading";
 import { ProgressContext } from "../app";
+import PropTypes from 'prop-types';
 
 const useStyle = makeStyles((theme) => ({
     container : {
@@ -230,4 +231,8 @@ e.g.) name, address, mobile NO. etc.
         </Box>
         </React.Fragment>
     )
+}
+
+Headers.propTypes = {
+    isLoading : PropTypes.bool
 }

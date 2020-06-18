@@ -6,6 +6,8 @@ import {Dialog,
     ListItemText,
     Box,
     makeStyles} from '@material-ui/core';
+import PropTypes from 'prop-types';
+
 const useStyle = makeStyles(theme => {
     icon : {
         width : '3vw'
@@ -48,4 +50,8 @@ export default function ManualDialog (props) {
         </List>
     </Dialog>
     )
+}
+ManualDialog.propTypes = {
+    open : PropTypes.bool.isRequired,
+    onClose : PropTypes.func.isRequired
 }

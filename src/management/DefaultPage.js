@@ -2,6 +2,8 @@ import { Box, Button, Fade, Paper, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import background from '../images/management-background.jpg'
 import { Link } from "react-router-dom";
+import PropTypes from 'prop-types';
+
 const useStyles = makeStyles(theme => ({
     container : {
         width : '100%',
@@ -89,4 +91,14 @@ export default function DefaultPage ({state , setState, match}) {
         </Box>
     </Fade>
     )
+}
+
+DefaultPage.propTypes = {
+    state : PropTypes.shape({
+        defaultPage : PropTypes.bool.isRequired,
+        hasTable : PropTypes.bool.isRequired,
+        columns : PropTypes.array,
+        data : PropTypes.array
+    }),
+    setState : PropTypes.func.isRequired,
 }

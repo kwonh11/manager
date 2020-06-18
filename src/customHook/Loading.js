@@ -1,5 +1,5 @@
 import {Box, CircularProgress, Button} from '@material-ui/core';
-
+import PropTypes from 'prop-types';
 
 export default function Loading ({isLoading}) {
     return (
@@ -21,4 +21,8 @@ export default function Loading ({isLoading}) {
         }
         </React.Fragment>
         )
+}
+
+Loading.propTypes = {
+    isLoading : PropTypes.bool
 }

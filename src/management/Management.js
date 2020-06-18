@@ -12,6 +12,7 @@ import CustomSnackbar from '../customHook/SnackBar';
 import { Box } from "@material-ui/core";
 import { ProgressContext } from "../app";
 import Loading from "../customHook/Loading";
+import PropTypes from 'prop-types';
 // useEffect로 data, columns 가 변경될 때마다 서버에 저장 후 갱신
 // ./util 경로에 로직 작성
 // 통신에 대한 testcode작성
@@ -173,4 +174,8 @@ export default function ManagementTable({isLoading}) {
     )}
     </React.Fragment>
   );
+}
+
+ManagementTable.propTypes = {
+  isLoading : PropTypes.bool
 }

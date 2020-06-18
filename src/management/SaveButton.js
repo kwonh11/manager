@@ -1,7 +1,8 @@
 import { Button, Tooltip} from '@material-ui/core'
 import { saveData } from "../util/ManagementAPI";
+import PropTypes from 'prop-types';
 
-export default function ({setSavedSnack , dataManager}) {
+export default function SaveButton ({setSavedSnack , dataManager}) {
     function onClick () {
           // SAVE EVENT util > ManagementAPI.saveData 만들어서 콜하기
           const data = [];
@@ -38,4 +39,9 @@ export default function ({setSavedSnack , dataManager}) {
         </Button>
       </Tooltip>
     )
+}
+
+SaveButton.propTypes = {
+  setSavedSnack : PropTypes.func.isRequired,
+  dataManager : PropTypes.object
 }

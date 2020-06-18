@@ -1,6 +1,7 @@
 import { makeStyles } from '@material-ui/core/styles';
 import {Typography , Stepper, Step, Box, StepLabel} from '@material-ui/core';
 import slideSource from './ImageSlideSources';
+import PropTypes from 'prop-types';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -33,4 +34,7 @@ export default function DescriptionList ({stepper}) {
             </Stepper>
         </Box>
     );
+}
+DescriptionList.propTypes = {
+    stepper : PropTypes.number.isRequired
 }

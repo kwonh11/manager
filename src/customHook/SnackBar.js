@@ -1,7 +1,8 @@
 import { Snackbar } from "@material-ui/core";
 import { Alert } from "@material-ui/lab";
+import PropTypes from 'prop-types';
 
-export default ({open, onClose, content, status, direction}) => {
+export default function CustomSnackbar ({open, onClose, content, status, direction}) {
     return (
         <Snackbar
         open={open}
@@ -14,4 +15,12 @@ export default ({open, onClose, content, status, direction}) => {
             </Alert>
         </Snackbar>
     )
+}
+
+CustomSnackbar.propTypes = {
+    open : PropTypes.bool.isRequired,
+    onClose : PropTypes.func,
+    content : PropTypes.string,
+    status : PropTypes.oneOf(['error','success']),
+    direction : PropTypes.object,
 }
