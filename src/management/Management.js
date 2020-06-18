@@ -24,7 +24,7 @@ export default function ManagementTable({isLoading}) {
 
   const handleProgress = React.useContext(ProgressContext);
 
-  const [ cookies , setCookie , removeCookie ] = useCookies (['profile','user']);
+  const [ cookies , setCookie , removeCookie ] = useCookies (['profile']);
   // states
   const [snack, setSnack] = React.useState({open : false});
   const [savedSnack , setSavedSnack] = React.useState({open:false});
@@ -40,7 +40,6 @@ export default function ManagementTable({isLoading}) {
 
   // constructor
   useOnFirstRender(()=>{
-    if (cookies.user) {   // 쿠키에 토큰이 있을 경우 테이블 fetch API실행
       getManagementTable().then(response => {
         console.log(`status : ${response.status} , data : ${JSON.stringify(response.data)}`);
           // 유저 확인됐고 테이블도 비어있지 않을 경우
@@ -55,8 +54,7 @@ export default function ManagementTable({isLoading}) {
       }).catch(err => {
         console.log(err);
         setErrorSnack({open:true});
-      })
-    }
+      });
   });
 
   // events

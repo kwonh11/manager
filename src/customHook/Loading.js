@@ -6,7 +6,7 @@ export default function Loading ({isLoading}) {
         <React.Fragment>
         {
         isLoading && 
-            (<Box style={{height:'100vh', width:'100%', display:'flex', justifyContent:'center',
+            (<Box style={{height:'110vh', width:'100vw', display:'flex', justifyContent:'center',
             alignItems:'center', flexDirection:'column'}}>
             <Button variant='text'
             color='primary'

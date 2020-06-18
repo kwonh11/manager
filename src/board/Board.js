@@ -39,8 +39,9 @@ export default function Board({isLoading}) {
         })
     },[]);
     return (
-        <Box className={classes.container}>
+        <React.Fragment>
         <Loading isLoading={isLoading}/>
+        <Box className={classes.container}>
         <Paper className={classes.paper} elevation={5}>
             <Box className={classes.backLogo} >
             <Typography variant='h1' style={{fontWeight:'bolder' , color:'#e0e0e0'}}> IN READY. </Typography>
@@ -64,5 +65,6 @@ export default function Board({isLoading}) {
             </Box>
         </Paper>
         </Box>
+        </React.Fragment>
     )
 }

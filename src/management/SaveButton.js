@@ -26,6 +26,9 @@ export default function ({setSavedSnack , dataManager}) {
           } else {
             setErrorSnack({open:true});
           }
+        }).catch(error => {
+          console.log(error);
+          setErrorSnack({open:true});
         })
     }
     return (

@@ -64,7 +64,7 @@ export default function Headers ({isLoading}) {
     // style, cookie
     const classes = useStyle();
     const handleProgress = React.useContext(ProgressContext);
-    const [ cookies , setCookie , removeCookie ] = useCookies (['profile','user']);
+    const [ cookies , setCookie , removeCookie ] = useCookies (['profile']);
     // states
     const [fade, setFade] = React.useState(false);
     const [snack, setSnack] = React.useState({open:false});
@@ -135,7 +135,6 @@ export default function Headers ({isLoading}) {
     // events
     const handleLogout = () => {    // 모든 쿠키 삭제와 profile제거
         removeCookie('profile');
-        removeCookie('user');
         location.href = location.origin;
     }
     const handleSubmit = (headers, groupings, isAutoSave) => {

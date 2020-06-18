@@ -19,11 +19,10 @@ export const GlobalSnackbarContext = React.createContext();
 
 export default function App() {
     const { id_token } = qs.parse(window.location.hash.substr(1));
-    const [ cookies , setCookie , removeCookie ] = useCookies (['profile','user']);
+    const [ cookies , setCookie , removeCookie ] = useCookies (['profile']);
     const [ profile , setProfile ] = React.useState(cookies.profile);
     const [isLoading, setIsLoading] = React.useState(false);
     const [globalSnackbar, setGlobalSnackbar] = React.useState({open : false , result: 'success'})
-    const token = cookies.user;
     const progressRef = React.useRef(0);
     const handleBeforeunload = (result) => {
         const interval = setInterval(()=> {
@@ -50,14 +49,6 @@ export default function App() {
             })
         }
     },[id_token]);
-
-    React.useEffect(()=>{
-        // 기존 토큰이 있을 경우 서버로 재요청해서 만료된 토큰인지 확인
-        // 만료된 토큰일 경우 쿠키프로필, state프로필, 만료된 토큰 모두 제거
-        if (token) {
-            console.log(`기존 토큰 있음 token : ${token}`);
-        }
-    },[token]);
 
     React.useEffect(()=>{
         if (cookies.profile) {
