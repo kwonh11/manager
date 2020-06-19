@@ -4,6 +4,7 @@ import { Box, Paper, Typography, TextField, Avatar } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import PropTypes from 'prop-types';
 import {Face as FaceIcon} from '@material-ui/icons';
+import CustomSnackbar from "../customHook/SnackBar";
 
 const useStyles = makeStyles(theme => ({
     container : {
@@ -31,6 +32,7 @@ const useStyles = makeStyles(theme => ({
         flexDirection : 'column',
         justifyContent : 'center',
         alignItems : 'center',
+        zIndex : 1
     },
     chatContainer : {
         height : '80%',
@@ -56,7 +58,9 @@ const useStyles = makeStyles(theme => ({
         borderRadius : '15px',
         backgroundColor : '#8e8e8e',
         padding : '5px 12px',
-        margin : '0px 6px'
+        margin : '0px 6px',
+        width: '60vw',
+        overflow:'hidden'
     },
     myBubble : {
         display : 'flex',
@@ -66,7 +70,9 @@ const useStyles = makeStyles(theme => ({
         borderRadius : '15px',
         backgroundColor : '#789fff',
         padding : '5px 12px',
-        margin : '0px 6px'
+        margin : '0px 6px',
+        width: '60vw',
+        overflow:'hidden'
     },
     chatBox : {
         display : 'flex',
@@ -87,14 +93,21 @@ const useStyles = makeStyles(theme => ({
 export default function Board({isLoading}) {
     const classes = useStyles();
     const inputRef = React.useRef();
+    const [snack, setSnack] = React.useState({open:false});
     const [state, setState] = React.useState({
         input : '',
         chatLogs : []
     })
     const logRef = React.useRef(state.chatLogs);
     const chatContainerRef = React.useRef();
-    console.log(state.chatLogs)
-    const onInputChange = (e) => {setState({...state, input : e.target.value})};
+    const onInputChange = (e) => {
+        const value = e.target.value;
+        if (value.length < 95) {
+            setState({...state, input : value});
+        } else if (value.length >= 95) {
+            setSnack({open:true})
+        }
+    };
     const enterKeyHandler = (e) => {
         if (e.keyCode === 13) { // enter pressed
             const input = inputRef.current? inputRef.current.querySelector('#message') : '';
@@ -130,11 +143,11 @@ export default function Board({isLoading}) {
                             index%2===0? 
                             // 다른사람들이 말한 건 왼쪽 정렬
                             (
-                        <Box className={classes.chatBox}>
+                        <Box className={classes.chatBox} key={index}>
                             <Avatar className={classes.OtherAvatar}>
                                 <FaceIcon/>
                             </Avatar>                       
-                            <Paper key={index} className={classes.bubble}>
+                            <Paper className={classes.bubble}>
                                 <Typography variant='caption' style={{fontSize:'0.5rem', lineHeight:'0.8'}}>{`${new Date().toDateString()} ${new Date().toTimeString()}`}</Typography>
                                 {value}
                             </Paper>
@@ -142,7 +155,7 @@ export default function Board({isLoading}) {
                             :
                             // 내가 말했을 경우 오른쪽 정렬, profile의 이름과 비교 
                             (
-                        <Box className={classes.chatBox} style={{alignSelf:'flex-end'}}>
+                        <Box className={classes.chatBox} style={{alignSelf:'flex-end'}} key={index}>
                             <Paper className={classes.myBubble} key={index}>
                             <Typography variant='caption' style={{fontSize:'0.5rem', lineHeight:'0.8'}}>{`${new Date().toDateString()} ${new Date().toTimeString()}`}</Typography>
                                 {value}
@@ -159,6 +172,7 @@ export default function Board({isLoading}) {
             <Box className={classes.inputBox}>
                 <TextField
                 id="message"
+                size='medium'
                 label="message"
                 style={{ margin: 8 }}
                 value={state.input}
@@ -176,6 +190,9 @@ export default function Board({isLoading}) {
             </Box>
         </Paper>
         </Box>
+        <CustomSnackbar open={snack.open} onClose={()=>setSnack({open:false})}
+        content='max length : 80' status='error'>
+        </CustomSnackbar>
         </React.Fragment>
     )
 }
