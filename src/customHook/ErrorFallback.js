@@ -17,7 +17,8 @@ const useStyle = makeStyles(theme => ({
         justifyContent : 'center',
         alignItems : 'center',
         width : '80vw',
-        height : '50vh',
+        // height : '50vh',
+        padding : '5vh',
         color : theme.palette.grey[500],
         fontWeight : 'bolder'
     },
@@ -36,7 +37,7 @@ const useStyle = makeStyles(theme => ({
 }));
 export default function ErrorFallback ({error, componentStack, resetErrorBoundary}) {
     const classes = useStyle();
-    const [second , setSecond] = React.useState(10);
+    const [second , setSecond] = React.useState(30);
 
     React.useEffect(()=>{
         if (second <= 0) location.replace(location.origin);
@@ -50,7 +51,7 @@ export default function ErrorFallback ({error, componentStack, resetErrorBoundar
     return (
         <Box className={classes.root}>
             <Paper className={classes.paper}>
-                <Typography variant='h3'> {`ERROR : ${error.message}`} </Typography>
+                <Typography variant='h5'> {`ERROR : ${error.message}`} </Typography>
                 <Typography variant='h3'> {`Will go back to the HOME`}  </Typography>
                 <Typography variant='h2'> {`in ${second} seconds.`}  </Typography>
                 <Button className={classes.button} variant='outlined' color='secondary' size='large' onClick={resetErrorBoundary}> 

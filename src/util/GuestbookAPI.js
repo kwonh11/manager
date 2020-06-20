@@ -5,7 +5,6 @@ import serverURL from './serverURL';
 export const getGuestbookList = () => {
     return (axios.get(`${serverURL}/guestbook`))
 }
-// 삭제의 경우 req.articleId, 수정의 경우 req.articleId, req.content
 
 // 등록
 export const postGuestbook = (content) => {
@@ -17,19 +16,19 @@ export const postGuestbook = (content) => {
 }
 
 // 수정
-export const updateGuestbook = (articleId, content) => {
-    return axios.put(`${serverURL}/guestbook`, {
-        data : {
-            articleId,
-            content
-        }
-    },{withCredentials : true})
-}
+// export const updateGuestbook = (articleId, content) => {
+//     return axios.put(`${serverURL}/guestbook`, {
+//         data : {
+//             articleId,
+//             content
+//         }
+//     },{withCredentials : true})
+// }
 
-export const deleteGuestbook = (articleId) => {
+export const deleteGuestbook = (article_id) => {
     return axios.delete(`${serverURL}/guestbook` , {
         data : {
-            articleId
+            article_id
         }
     },{ withCredentials:true})
 }

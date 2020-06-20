@@ -7,7 +7,7 @@ import {CssBaseline} from '@material-ui/core';
 import Home from "./home/Home";
 import Footer from '../src/footer/Footer';
 import qs from 'qs';
-import {useCookies} from 'react-cookie'
+import {useCookies} from 'react-cookie';
 import { getTokenAndProfile } from "./util/LoginAPI";
 import CustomSnackbar from './customHook/SnackBar';
 import ErrorFallback from './customHook/ErrorFallback';

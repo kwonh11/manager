@@ -1,12 +1,13 @@
 
 import Loading from "../customHook/Loading";
-import { Box, Paper, Typography, TextField, Avatar } from "@material-ui/core";
+import { Box, Paper, Typography, TextField, Avatar,Tooltip,IconButton } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import PropTypes from 'prop-types';
-import {Face as FaceIcon} from '@material-ui/icons';
 import CustomSnackbar from "../customHook/SnackBar";
 import useOnFirstRender from "../customHook/useOnFirstRender";
-import { getGuestbookList , postGuestbook, updateGuestbook, deleteGuestbook} from '../util/GuestbookAPI';
+import { getGuestbookList , postGuestbook, deleteGuestbook} from '../util/GuestbookAPI';
+import DeleteIcon from '@material-ui/icons/Delete';
+
 const useStyles = makeStyles(theme => ({
     container : {
         width : '100%',
@@ -96,27 +97,46 @@ export default function Guestbook({isLoading}) {
     const classes = useStyles();
     const inputRef = React.useRef();
     const [snack, setSnack] = React.useState({open:false});
+    const [tooFastSnack, setTooFastSnack] = React.useState({open:false});
+    const [deletedSnack, setDeletedSnack] = React.useState({open:false});
+    const [errorSnack, setErrorSnack] = React.useState({open:false});
     const [state, setState] = React.useState({
         input : '',
         chatLogs : []
     })
-    const [transportable, setTransportable] = React.useState(true);
-    const [tooFastSnack, setTooFastSnack] = React.useState(false);
-    const logRef = React.useRef(state.chatLogs);
+    const logRef = React.useRef();
     const chatContainerRef = React.useRef();
+    const transportableRef = React.useRef(true);
+
+    const getList = () => {
+        getGuestbookList().then(result => {
+            // console.log(result.data);
+            const list = [...result.data];
+            console.log(list);
+            logRef.current = [...list];
+            setState({...state, chatLogs : [...list]});
+        }).catch(err=>{
+            setErrorSnack({open : true});
+        })
+    }
 
     // constructor
     useOnFirstRender(()=>{
-        getGuestbookList().then(result => {
-            console.log(result.data);
-            const list = result.data;
-
-        }).catch(err=>{
-            throw new Error(err);
-        })
+        getList();
     })
-
-
+    
+    const handleOnDeleteClick = (e) => {
+        const id = e.currentTarget.dataset.id;
+        console.log(`삭제요청 ID : ${id}`);    // db의 _id값으로 삭제요청하기
+        deleteGuestbook(id).then(result=>{
+            if (result.result === 'deleted') setTimeout(setDeletedSnack({open:true}),3000);
+            getList();
+        }).catch(err => {
+            console.log(err);
+            setErrorSnack({open : true});
+            getList();
+        })
+    }
     const onInputChange = (e) => {
         const value = e.target.value;
         if (value.length < 120) {
@@ -133,30 +153,29 @@ export default function Guestbook({isLoading}) {
                 chatContainerRef.current.scrollTo(0,chatContainerRef.current.scrollHeight);
                 if (input.value) {
                     // post API & get API
-                    if (!transportable) {
-                        setTooFastSnack(true);
+                    if (transportableRef.current === false) {
+                        setTooFastSnack({open:true});
                     }else {
                         postGuestbook(input.value).then(response => {
                             if (response.status === 200) {
-                                setTimeout(setTransportable(true), 30000);
-                                setTransportable(false);
+                                setTimeout(()=>{
+                                    transportableRef.current = true;
+                                }, 15000);
+                                transportableRef.current = false;
                                 setSnack({open:true , status:'success'});
+                                getList();
                             } 
                         }).catch(error => {
-                            if (error.response.status === 400) {
+                            if (error.response.status === 400 || error.response.status === 500) {
                                 setSnack({open:true , status:'error'});
-                                setTimeout(setTransportable(true), 30000);
                             }
                         })
-                        logRef.current = [...logRef.current , input.value];
-                        setState({input : '' , chatLogs : logRef.current})
                     }
                 }
             }
         }
     }
     React.useEffect(()=>{
-        // get API
         window.addEventListener('keydown', enterKeyHandler);
         return () => window.removeEventListener('keydown' , enterKeyHandler);
     },[]);
@@ -171,33 +190,36 @@ export default function Guestbook({isLoading}) {
                     PREPARING
                 </Typography>
                 {
-                    state.chatLogs.map((value,index)=> {
-                        return (
-                            index%2===0? 
-                            // 다른사람들이 말한 건 왼쪽 정렬
-                            (
-                        <Box className={classes.chatBox} key={index}>
-                            <Avatar className={classes.OtherAvatar}>
-                                <FaceIcon/>
-                            </Avatar>                       
-                            <Paper className={classes.bubble}>
-                                <Typography variant='caption' style={{fontSize:'0.5rem', lineHeight:'0.8'}}>{`${new Date().toDateString()} ${new Date().toTimeString()}`}</Typography>
-                                {value}
-                            </Paper>
-                        </Box>)
-                            :
-                            // 내가 말했을 경우 오른쪽 정렬, profile의 이름과 비교 
-                            (
-                        <Box className={classes.chatBox} style={{alignSelf:'flex-end'}} key={index}>
-                            <Paper className={classes.myBubble} key={index}>
-                            <Typography variant='caption' style={{fontSize:'0.5rem', lineHeight:'0.8'}}>{`${new Date().toDateString()} ${new Date().toTimeString()}`}</Typography>
-                                {value}
-                            </Paper>
-                            <Avatar className={classes.myAvatar}>
-                                <FaceIcon/>
-                            </Avatar>
+                state.chatLogs.map((article,index)=> {
+                    return (
+                        article.own ? // 서버에서 확인된 본인게시물일 경우  (서버측 확인필요 수정후 주석 지우기 )
+                        // 내가 말했을 경우 오른쪽 정렬, profile의 이름과 비교 
+                        (
+                    <Tooltip interactive placement='right' key={index} title={
+                        <IconButton onClick={handleOnDeleteClick} color='primary' size='small' data-id={article._id}>
+                            <DeleteIcon/>
+                        </IconButton>
+                    }>
+                        <Box className={classes.chatBox} style={{alignSelf:'flex-end'}}>
+                                <Paper className={classes.myBubble}>
+                                <Typography variant='caption' style={{fontSize:'0.5rem', lineHeight:'0.8'}}>{article.date}</Typography>
+                                    {article.content}
+                                </Paper>
+                                <Avatar className={classes.myAvatar} src={article.picture}/>
                         </Box>
-                            )
+                    </Tooltip>
+                        )   // end of 본인게시물
+                        :
+                        // 다른사람들이 말한 건 왼쪽 정렬
+                        (
+                        <Box className={classes.chatBox} key={index}>
+                            <Avatar className={classes.OtherAvatar} src={article.picture}/>
+                            <Paper className={classes.bubble}>
+                            <Typography variant='caption' style={{fontSize:'0.5rem', lineHeight:'0.8'}}>{article.date}</Typography>
+                                {article.content}
+                            </Paper>
+                        </Box>
+                        )    
                         )
                     })
                 }
@@ -227,7 +249,11 @@ export default function Guestbook({isLoading}) {
         content={snack.status === 'success'? 'SUCCESS' : snack.status === 'error'? 'FAILED : LOGIN FIRST' : 'max length : 120'} 
         status={snack.status === 'success'? 'success' : 'error'} />
         <CustomSnackbar open={tooFastSnack.open} onClose={()=>setTooFastSnack({open:false})}
-        content='FAILED : TOO FAST' status='error' />
+        content='FAILED : sorry TOO FAST , Interval : 15s' status='error' />
+        <CustomSnackbar open={deletedSnack.open} onClose={()=>setDeletedSnack({open:false})}
+        content='Deleted' status='success' />
+        <CustomSnackbar open={errorSnack.open} onClose={()=>setErrorSnack({open:false})}
+        content={`Error ! `} status='error' />
         </React.Fragment>
     )
 }
