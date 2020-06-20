@@ -43,7 +43,7 @@ export default function Nav (props) {
     };
     const profile = React.useContext(UserContext);
     const anchor = profile.name? 'MYPAGE' :'LOGIN';
-    const links = ['board','management'];
+    const links = ['guestbook','management'];
     const LogoutBtn = profile.name? <SignOutButton/> : null;
 
     return (

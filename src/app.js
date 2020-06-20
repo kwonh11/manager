@@ -1,6 +1,6 @@
  import { BrowserRouter, Switch, Route } from "react-router-dom";
 import Nav from "./nav/Nav";
-import Board from "./board/Board";
+import Guestbook from "./guestbook/Guestbook";
 import Management from "./management/Management";
 import Headers from './management/Headers';
 import {CssBaseline} from '@material-ui/core';
@@ -77,7 +77,7 @@ export default function App() {
                     <Nav/>
                     <Switch>
                         <Route exact path='/' render={()=><Home isLoading={isLoading}/>}></Route>
-                        <Route path='/board' render={()=><Board isLoading={isLoading}/>}></Route>
+                        <Route path='/guestbook' render={()=><Guestbook isLoading={isLoading}/>}></Route>
                         <Route path='/management' render={()=> <Management isLoading={isLoading}/>}></Route>
                         <Route path='/headers' render={()=> <Headers isLoading={isLoading}/>}></Route>
                     </Switch>

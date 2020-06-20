@@ -60,7 +60,7 @@ function Copyright() {
     }
     return (
       <React.Fragment>
-        {location.pathname === '/board'? null : (
+        {location.pathname === '/guestbook'? null : (
           <React.Fragment>
       <Box className={classes.root} style={
         location.pathname === '/' ? 
