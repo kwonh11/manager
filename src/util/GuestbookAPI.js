@@ -3,7 +3,7 @@ import serverURL from './serverURL';
 
 // guestbook list 받아오기 30개
 export const getGuestbookList = () => {
-    return (axios.get(`${serverURL}/guestbook`))
+    return (axios.get(`${serverURL}/guestbook`,{withCredentials:true}))
 }
 
 // 등록
