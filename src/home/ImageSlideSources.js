@@ -4,11 +4,9 @@ import startRightAway from "../images/start-right-away.png";
 import makeHeaders from "../images/make-headers.png";
 import handleTable from "../images/handle-table.png";
 import useMymenu from "../images/mymenu.png";
-import slide0 from "../images/slide0.png";
 export default [
     {
         name : 'Quick start guide',
-        src : `${slide0}`,
         description : 'GUIDE',
     },
     {

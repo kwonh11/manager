@@ -24,7 +24,21 @@ export default function App() {
     const [ cookies , setCookie , removeCookie ] = useCookies (['profile']);
     const [ profile , setProfile ] = React.useState(cookies.profile);
     const [isLoading, setIsLoading] = React.useState(false);
-    const [globalSnackbar, setGlobalSnackbar] = React.useState({open : false , result: 'success'})
+    // snackbar
+    const [globalSnackbar, setGlobalSnackbar] = React.useState({open : false , result: 'success'});
+    const [tooFastSnack, setTooFastSnack] = React.useState({open:false});
+    const [deletedSnack, setDeletedSnack] = React.useState({open:false});
+    const [errorSnack, setErrorSnack] = React.useState({open:false,content:''});
+    const [successSnack, setSuccessSnack] = React.useState({open:false});
+    const [notLoggedSnack, setNotLoggedSnack] = React.useState({open:false});
+
+    const guestBookSnackProps = {isLoading ,
+        tooFastSnack, setTooFastSnack,
+        deletedSnack, setDeletedSnack,
+        errorSnack, setErrorSnack,
+        successSnack, setSuccessSnack,
+        notLoggedSnack, setNotLoggedSnack}
+
     const progressRef = React.useRef(0);
     const handleBeforeunload = (result) => {
         const interval = setInterval(()=> {
@@ -34,7 +48,6 @@ export default function App() {
         if (progressRef.current === 100) {
              progressRef.current = 0;
              setIsLoading(false);
-             setGlobalSnackbar({open:true , result:result});
              clearInterval(interval);
         }
     },200)
@@ -77,8 +90,10 @@ export default function App() {
                     <Nav/>
                     <Switch>
                         <Route exact path='/' render={()=><Home isLoading={isLoading}/>}></Route>
-                        <Route path='/guestbook' render={()=><Guestbook isLoading={isLoading}/>}></Route>
-                        <Route path='/management' render={()=> <Management isLoading={isLoading}/>}></Route>
+                        <Route path='/guestbook' render={()=><Guestbook {...guestBookSnackProps}/>}></Route>
+                        <Route path='/management' render={()=> <Management 
+                        setErrorSnack={setErrorSnack}
+                        isLoading={isLoading}/>}></Route>
                         <Route path='/headers' render={()=> <Headers isLoading={isLoading}/>}></Route>
                     </Switch>
                         <Route path='/' render={(props)=><Footer {...props}/>}></Route>
@@ -91,6 +106,16 @@ export default function App() {
                 content={globalSnackbar.result==='error'? `Not saved.
                 Reason : Invalid input.` :' SAVED '} status={globalSnackbar.result}
                 direction={{vertical:'top', horizontal:'right'}}/>
+                <CustomSnackbar open={successSnack.open} onClose={()=>setSuccessSnack({open:false})}
+                content='SUCCESS' status='success' />
+                <CustomSnackbar open={notLoggedSnack.open} onClose={()=>setNotLoggedSnack({open:false})}
+                content='LOGIN FIRST' status='error'/>
+                <CustomSnackbar open={tooFastSnack.open} onClose={()=>setTooFastSnack({open:false})}
+                content='SORRY TOO FAST ( Interval : 15s )' status='error' />
+                <CustomSnackbar open={deletedSnack.open} onClose={()=>setDeletedSnack({open:false})}
+                content='Deleted' status='success' />
+                <CustomSnackbar open={errorSnack.open} onClose={()=>setErrorSnack({open:false})}
+                content={`ERROR : ${errorSnack.content}`} status='error' />
             </ErrorBoundary>
         </React.Fragment>
     )

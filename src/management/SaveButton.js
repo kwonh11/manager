@@ -2,8 +2,13 @@ import { Button, Tooltip} from '@material-ui/core'
 import { saveData } from "../util/ManagementAPI";
 import PropTypes from 'prop-types';
 
-export default function SaveButton ({setSavedSnack , dataManager}) {
+export default function SaveButton ({setSavedSnack , dataManager, profile, setErrorSnack}) {
     function onClick () {
+          if (!profile) {
+            setErrorSnack({open:true , content:'로그인 먼저 진행해주세요 :)'});
+            console.log('not logged')
+            return
+          }
           // SAVE EVENT util > ManagementAPI.saveData 만들어서 콜하기
           const data = [];
           const groupings = [];

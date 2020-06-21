@@ -94,14 +94,18 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-export default function Guestbook({isLoading}) {
+export default function Guestbook(props) {
     const classes = useStyles();
     const inputRef = React.useRef();
     const [ cookies , setCookie , removeCookie ] = useCookies (['profile']);
-    const [snack, setSnack] = React.useState({open:false});
-    const [tooFastSnack, setTooFastSnack] = React.useState({open:false});
-    const [deletedSnack, setDeletedSnack] = React.useState({open:false});
-    const [errorSnack, setErrorSnack] = React.useState({open:false});
+
+    const {isLoading ,
+        tooFastSnack, setTooFastSnack,
+        deletedSnack, setDeletedSnack,
+        errorSnack, setErrorSnack,
+        successSnack, setSuccessSnack,
+        notLoggedSnack, setNotLoggedSnack} = props;
+
     const [state, setState] = React.useState({
         input : '',
         chatLogs : []
@@ -118,7 +122,7 @@ export default function Guestbook({isLoading}) {
             logRef.current = [...list];
             setState({...state, chatLogs : [...list]});
         }).catch(err=>{
-            setErrorSnack({open : true});
+            setErrorSnack({open : true , content : 'GUEST BOOK 목록 불러오기 실패'});
         })
     }
 
@@ -135,7 +139,7 @@ export default function Guestbook({isLoading}) {
             getList();
         }).catch(err => {
             console.log(err);
-            setErrorSnack({open : true});
+            setErrorSnack({open : true , content : '권한이 없습니다. 다시 로그인해보세요'});
             getList();
         })
     }
@@ -144,7 +148,7 @@ export default function Guestbook({isLoading}) {
         if (value.length < 120) {
             setState({...state, input : value});
         } else if (value.length >= 95) {
-            setSnack({open:true})
+            setErrorSnack({open:true, content : `95글자 미만 제한, 현재 : ${value.length}`})
         }
     };
     const enterKeyHandler = (e) => {
@@ -164,13 +168,15 @@ export default function Guestbook({isLoading}) {
                                     transportableRef.current = true;
                                 }, 15000);
                                 transportableRef.current = false;
-                                setSnack({open:true , status:'success'});
                                 getList();
+                                setSuccessSnack({open:true});
                             } 
                         }).catch(error => {
-                            setSnack({open:true , status:'error'});
+                            setErrorSnack({open:true, content:'글 등록은 로그인 후 이용해주세요 :) '});
                         })
                     }
+                } else {
+                    setErrorSnack({open:true, content:'글 등록은 로그인 후 이용해주세요 :) '});
                 }
             }
         }
@@ -187,7 +193,8 @@ export default function Guestbook({isLoading}) {
         <Paper className={classes.paper} elevation={5}>
             <Box className={classes.chatContainer} ref={chatContainerRef}>
                 <Typography variant='h3' color='textPrimary' className={classes.backLogo}>
-                    GUEST BOOK : LEAVE A MESSAGE.
+                    {`GUEST BOOK : 
+                      LEAVE A MESSAGE`}.
                 </Typography>
                 {
                 state.chatLogs.map((article,index)=> {
@@ -245,19 +252,9 @@ export default function Guestbook({isLoading}) {
             </Box>
         </Paper>
         </Box>
-        <CustomSnackbar open={snack.open} onClose={()=>setSnack({open:false})}
-        content={snack.status === 'success'? 'SUCCESS' : snack.status === 'error'? 'FAILED : LOGIN FIRST' : 'max length : 120'} 
-        status={snack.status === 'success'? 'success' : 'error'} />
-        <CustomSnackbar open={tooFastSnack.open} onClose={()=>setTooFastSnack({open:false})}
-        content='FAILED : sorry TOO FAST , Interval : 15s' status='error' />
-        <CustomSnackbar open={deletedSnack.open} onClose={()=>setDeletedSnack({open:false})}
-        content='Deleted' status='success' />
-        <CustomSnackbar open={errorSnack.open} onClose={()=>setErrorSnack({open:false})}
-        content={`Error ! `} status='error' />
         </React.Fragment>
     )
 }
-
 Guestbook.propTypes = {
-    isLoading : PropTypes.bool
+    isLoading : PropTypes.bool,
 }

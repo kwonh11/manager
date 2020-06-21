@@ -9,7 +9,9 @@ export const getTokenAndProfile = (token) => {
         withCredentials : true,
     }).then(response=>Promise.resolve(response.data));
 }
-
+export const logout = () => {
+    return axios.get(`${serverURL}/logout`,{withCredentials:true});
+}
 
 
 

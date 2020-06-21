@@ -2,7 +2,7 @@ import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import { ListItem , IconButton, Tooltip} from "@material-ui/core";
 import { makeStyles, withStyles } from '@material-ui/core'
 import {useCookies} from 'react-cookie';
-
+import { logout } from "../util/LoginAPI";
 const useStyle = makeStyles(theme => ({
     logout : {
         justifyContent:'flex-end',
@@ -25,9 +25,12 @@ export default function () {
     const classes = useStyle();
     const [ cookies , setCookie , removeCookie ] = useCookies (['profile','user']);
     const handleLogout = () => {    // 모든 쿠키 삭제와 profile제거
-        removeCookie('profile');
-        removeCookie('user');
-        location.href = location.origin;
+        console.log('logout');
+        logout().then(res => {
+            removeCookie('profile');
+            removeCookie('user');
+            location.href = location.origin;
+        })
     }
     return (
         <React.Fragment>

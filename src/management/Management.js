@@ -21,14 +21,13 @@ import PropTypes from 'prop-types';
 // SideMenuList => Login으로 변경, 비로그인 시 LOGIN으로 보일 것, 로그인시 MY MENU로 보기
 
 
-export default function ManagementTable({isLoading}) {
+export default function ManagementTable({isLoading, setErrorSnack}) {
 
   const handleProgress = React.useContext(ProgressContext);
   const [ cookies , setCookie , removeCookie ] = useCookies (['profile']);
   // states
   const [snack, setSnack] = React.useState({open : false});
   const [savedSnack , setSavedSnack] = React.useState({open:false});
-  const [errorSnack , setErrorSnack] = React.useState({open:false});
   const [dialog, setDialog] = React.useState({open : false});
   const [state, setState] = React.useState({  // 최초 API로 받아오는 동작필요
     defaultPage : true,
@@ -53,7 +52,7 @@ export default function ManagementTable({isLoading}) {
           }
       }).catch(err => {
         console.log(err);
-        setErrorSnack({open:true});
+        setErrorSnack({open:true, content:'데이터를 불러오는 중 에러 발생.'});
       });
   });
 
@@ -61,21 +60,32 @@ export default function ManagementTable({isLoading}) {
   const handleDialogClose = () => {setDialog({open : false});};
   const handleOnSave = (isAutoSave) => {
       // tableRef.current.dataManager 의 ref에서 신뢰도있는 데이터 참조
-      const data = [];
-      const groupings = [];
-      const headers = tableRef.current.dataManager.columns.reduce((obj,v,i)=>{
-        obj[`header${i}`] = v.title;
-        groupings.push(v.grouping);
-        return obj;
-      },{})
-      tableRef.current.dataManager.data.forEach((v,i)=>{
-        const {tableData, ...rest} = v;
-        data.push(rest);
-      });
-      saveData(headers, groupings, data).catch(err => {
-        if(err) throw new Error(err);
-      });
-      if(!isAutoSave) setSavedSnack({open:true});
+      if (!cookies.profile) {
+        setErrorSnack({open:true, content:'저장은 로그인 먼저 진행해주세요 :)'});
+        console.log('not logged')
+      } else {
+        const data = [];
+        const groupings = [];
+        const headers = tableRef.current.dataManager.columns.reduce((obj,v,i)=>{
+          obj[`header${i}`] = v.title;
+          groupings.push(v.grouping);
+          return obj;
+        },{})
+        tableRef.current.dataManager.data.forEach((v,i)=>{
+          const {tableData, ...rest} = v;
+          data.push(rest);
+        });
+        saveData(headers, groupings, data).then(response=>{
+          if(response.result === 'success') {
+            if(!isAutoSave) setSavedSnack({open:true});
+          }
+        }).catch(err => {
+          if(err) {
+            console.log(`error occured during handleOnSave : ${err}`);
+            setErrorSnack({open:true, content:'로그인 시간이 만료된 것 같습니다. 다시 시도해보세요'});
+          }
+        });
+      }
   }
   
   // effects
@@ -113,7 +123,9 @@ export default function ManagementTable({isLoading}) {
     <MaterialTable
       tableRef={tableRef}
       title={
-      <SaveButton setSavedSnack={setSavedSnack} 
+      <SaveButton setSavedSnack={setSavedSnack}
+      setErrorSnack={setErrorSnack}
+      profile={cookies.profile}
       // 마운트 이후에 접근필요
       dataManager={tableRef.current ? tableRef.current.dataManager : {}}/>
     }
@@ -168,8 +180,6 @@ export default function ManagementTable({isLoading}) {
     content='need some help? ? double-click any space !' status="success"/>
     <CustomSnackbar open={savedSnack.open} onClose={()=>setSavedSnack({open:false})} 
     content='SAVED !' status="success"/>
-    <CustomSnackbar open={errorSnack.open} onClose={()=>setErrorSnack({open:false})} 
-    content='ERROR !' status="error"/>
     </Box>
     )}
     </React.Fragment>
