@@ -50,7 +50,7 @@ const defaultData = {
       { "Name": 'Mehmet', 'Surname': 'Baran', "Birth Year": 1983, "Phone":'01046509995' ,"Gender": 1 , "Memo":''},
       { "Name": 'Adam', 'Surname': 'Adam', "Birth Year": 1984, "Phone":'01046509795' ,"Gender": 2 , "Memo":''},
       { "Name": 'Mehmet', 'Surname': 'Atom', "Birth Year": 1985, "Phone":'01046509695' ,"Gender": 1 , "Memo":''},
-      { "Name": 'mul', 'Surname': 'Kongna', "Birth Year": 1986, "Phone":'01046509195' ,"Gender": 1 , "Memo":''},
+      { "Name": 'mul', 'Surname': 'Kongna', "Birth Year": 1995, "Phone":'01046509195' ,"Gender": 1 , "Memo":''},
       { "Name": 'Jack', 'Surname': 'Jack', "Birth Year": 1987, "Phone":'01046509295' ,"Gender": 2 , "Memo":''},
       { "Name": 'Bob', 'Surname': 'Bob', "Birth Year": 1988, "Phone":'01046509395' ,"Gender": 2 , "Memo":''},
     ]

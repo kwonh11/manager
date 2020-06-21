@@ -148,7 +148,7 @@ export default function Guestbook(props) {
         if (value.length < 120) {
             setState({...state, input : value});
         } else if (value.length >= 95) {
-            setErrorSnack({open:true, content : `95글자 미만 제한, 현재 : ${value.length}`})
+            setErrorSnack({open:true, content : `120글자 제한, 현재 : ${value.length} 글자`})
         }
     };
     const enterKeyHandler = (e) => {
@@ -157,7 +157,7 @@ export default function Guestbook(props) {
             if (input.value) {
                 input.focus();
                 chatContainerRef.current.scrollTo(0,chatContainerRef.current.scrollHeight);
-                if (input.value, cookies.profile) {
+                if (input.value) {
                     // post API & get API
                     if (transportableRef.current === false) {
                         setTooFastSnack({open:true});
