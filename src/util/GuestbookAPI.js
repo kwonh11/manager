@@ -7,11 +7,17 @@ export const getGuestbookList = () => {
 }
 
 // 등록
-export const postGuestbook = (content) => {
+export const postGuestbook = (content, name, picture) => {
+    if (!name || !picture || !content) {
+        console.log(`postGuestbook : parameter has empty`);
+        return null;
+    }
     return axios.post(`${serverURL}/guestbook` , {
         data : {
-            content
-        }
+            content,
+            name,
+            picture
+        },
     }, {withCredentials:true})
 }
 
@@ -29,6 +35,7 @@ export const deleteGuestbook = (article_id) => {
     return axios.delete(`${serverURL}/guestbook` , {
         data : {
             article_id
-        }
-    },{ withCredentials:true})
+        },
+        withCredentials : true
+    })
 }

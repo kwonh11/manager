@@ -45,7 +45,7 @@ export default function App() {
             getTokenAndProfile(id_token).then(data => {
                 console.log(`response data : ${JSON.stringify(data)}`);
                 const {name ,email, picture} = data;
-                setCookie("profile",{name , email, picture},{path:"/" , maxAge : 7200});  // maxAge : 2시간
+                setCookie("profile",{name , email, picture},{path:"/" , maxAge : 7200, sameSite:'none'});  // maxAge : 2시간
             }).catch(err => {
                 throw new Error('Login Failed. Please authorize the use of cookies in your browser.');
             })

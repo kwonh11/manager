@@ -7,6 +7,7 @@ import CustomSnackbar from "../customHook/SnackBar";
 import useOnFirstRender from "../customHook/useOnFirstRender";
 import { getGuestbookList , postGuestbook, deleteGuestbook} from '../util/GuestbookAPI';
 import DeleteIcon from '@material-ui/icons/Delete';
+import {useCookies} from 'react-cookie';
 
 const useStyles = makeStyles(theme => ({
     container : {
@@ -38,7 +39,7 @@ const useStyles = makeStyles(theme => ({
         opacity:0.3
     },
     chatContainer : {
-        height : '80%',
+        height : '85%',
         width : '100%',
         padding : '0.5vw 5vw',
         display : 'flex',
@@ -50,8 +51,8 @@ const useStyles = makeStyles(theme => ({
         overflowX : 'hidden'
     },
     inputBox : {
-        width : '40vw',
-        marginTop:'5vh'
+        width : '60vw',
+        marginTop:'2vh'
     },
     bubble : {
         display : 'flex',
@@ -96,6 +97,7 @@ const useStyles = makeStyles(theme => ({
 export default function Guestbook({isLoading}) {
     const classes = useStyles();
     const inputRef = React.useRef();
+    const [ cookies , setCookie , removeCookie ] = useCookies (['profile']);
     const [snack, setSnack] = React.useState({open:false});
     const [tooFastSnack, setTooFastSnack] = React.useState({open:false});
     const [deletedSnack, setDeletedSnack] = React.useState({open:false});
@@ -151,12 +153,12 @@ export default function Guestbook({isLoading}) {
             if (input.value) {
                 input.focus();
                 chatContainerRef.current.scrollTo(0,chatContainerRef.current.scrollHeight);
-                if (input.value) {
+                if (input.value, cookies.profile) {
                     // post API & get API
                     if (transportableRef.current === false) {
                         setTooFastSnack({open:true});
                     }else {
-                        postGuestbook(input.value).then(response => {
+                        postGuestbook(input.value,cookies.profile.name, cookies.profile.picture).then(response => {
                             if (response.status === 200) {
                                 setTimeout(()=>{
                                     transportableRef.current = true;
@@ -166,9 +168,7 @@ export default function Guestbook({isLoading}) {
                                 getList();
                             } 
                         }).catch(error => {
-                            if (error.response.status === 400 || error.response.status === 500) {
-                                setSnack({open:true , status:'error'});
-                            }
+                            setSnack({open:true , status:'error'});
                         })
                     }
                 }
@@ -179,7 +179,7 @@ export default function Guestbook({isLoading}) {
         window.addEventListener('keydown', enterKeyHandler);
         return () => window.removeEventListener('keydown' , enterKeyHandler);
     },[]);
-
+    const email = cookies.profile ? cookies.profile.email==='kwonh11@gmail.com' ? true : false : false;
     return (
         <React.Fragment>
         <Loading isLoading={isLoading}/>
@@ -187,12 +187,12 @@ export default function Guestbook({isLoading}) {
         <Paper className={classes.paper} elevation={5}>
             <Box className={classes.chatContainer} ref={chatContainerRef}>
                 <Typography variant='h3' color='textPrimary' className={classes.backLogo}>
-                    PREPARING
+                    GUEST BOOK : LEAVE A MESSAGE.
                 </Typography>
                 {
                 state.chatLogs.map((article,index)=> {
                     return (
-                        article.own ? // 서버에서 확인된 본인게시물일 경우  (서버측 확인필요 수정후 주석 지우기 )
+                        (article.own || email) ? // 서버에서 확인된 본인게시물일 경우  (서버측 확인필요 수정후 주석 지우기 )
                         // 내가 말했을 경우 오른쪽 정렬, profile의 이름과 비교 
                         (
                     <Tooltip interactive placement='right' key={index} title={
@@ -208,7 +208,7 @@ export default function Guestbook({isLoading}) {
                                 <Avatar className={classes.myAvatar} src={article.picture}/>
                         </Box>
                     </Tooltip>
-                        )   // end of 본인게시물
+                        )
                         :
                         // 다른사람들이 말한 건 왼쪽 정렬
                         (
