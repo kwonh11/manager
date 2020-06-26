@@ -7,16 +7,17 @@ export const getGuestbookList = () => {
 }
 
 // 등록
-export const postGuestbook = (content, name, picture) => {
-    if (!name || !picture || !content) {
+export const postGuestbook = (content, profile) => {
+    console.log(`profile : ${profile}`);
+    if (!profile.name || !profile.picture) {
         console.log(`postGuestbook : parameter has empty`);
-        return null;
+        return Promise.reject();
     }
     return axios.post(`${serverURL}/guestbook` , {
         data : {
             content,
-            name,
-            picture
+            name : profile.name,
+            picture : profile.picture
         },
     }, {withCredentials:true})
 }

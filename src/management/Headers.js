@@ -79,7 +79,6 @@ export default function Headers ({isLoading}) {
     // constructor
     useOnFirstRender(()=>{
         getManagementTable().then(response => {
-            console.log(`response : ${JSON.stringify(response)}`);
             if (response.status === 200) {
                 const groupingLength = response.data? response.data.groupings ? response.data.groupings.length : 0 : 0;
                 const groupings = response.data? response.data.groupings ? [...response.data.groupings] : [] : [];
@@ -95,9 +94,10 @@ export default function Headers ({isLoading}) {
                 console.log(dataRef.current);
                 setData({headers, groupings})
             } else {
-                if (response.status === 204) {  // unauthorized
-                    setTimeout(handleLogout(), 3500);
-                    setResultSnack({open : true,status:'error', content : `Please log in again.`});
+                if (response.status === 204) {  // unauthorized no contents
+                    console.log('unauthorized')
+                    setTimeout(()=>handleLogout(), 3000);
+                    setResultSnack({open : true,status:'error', content : `PLEASE LOGIN :(`});
                 } else {
                     setResultSnack({open : true,status:'error', content : `error (code : ${response.status})`});
                 }
@@ -105,7 +105,7 @@ export default function Headers ({isLoading}) {
         }).catch(err => {
             if(err) {
                 console.log(err);
-                setTimeout(handleLogout(), 3500);
+                setTimeout(()=>handleLogout(), 3000);
                 setResultSnack({open:true,status:'error', content:'Please log in again.'});
             }
         })}
@@ -153,7 +153,7 @@ export default function Headers ({isLoading}) {
         })
         .catch(err => {
             setTimeout(handleLogout(), 2000);
-            setResultSnack({open:true,status:'error', content:'Please log in again.'});
+            setResultSnack({open:true,status:'error', content:'PLEASE LOGIN :('});
         })
     }
     const handleInputChange = (e,index) => {

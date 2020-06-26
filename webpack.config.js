@@ -2,6 +2,7 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const {CleanWebpackPlugin} = require('clean-webpack-plugin');
 const webpack = require('webpack');
+const { config } = require('process');
 
 module.exports = {
     entry : {
@@ -27,7 +28,8 @@ module.exports = {
                     minSize : 100,
                 },
             }
-        }
+        },
+        minimize : true
     },
     devtool: 'inline-source-map',
     devServer : {
@@ -75,7 +77,7 @@ module.exports = {
         }),
         new webpack.ProvidePlugin({
             React : 'react',
-        })
+        }),
     ],
     mode : 'development',
 }

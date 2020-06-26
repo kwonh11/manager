@@ -161,8 +161,10 @@ export default function Guestbook(props) {
                     // post API & get API
                     if (transportableRef.current === false) {
                         setTooFastSnack({open:true});
+                    } else if (!cookies.profile) {
+                        setErrorSnack({open:true, content:'글 등록은 로그인 후 이용해주세요 :) '});
                     }else {
-                        postGuestbook(input.value,cookies.profile.name, cookies.profile.picture).then(response => {
+                        postGuestbook(input.value,cookies.profile).then(response => {
                             if (response.status === 200) {
                                 setTimeout(()=>{
                                     transportableRef.current = true;
@@ -170,13 +172,13 @@ export default function Guestbook(props) {
                                 transportableRef.current = false;
                                 getList();
                                 setSuccessSnack({open:true});
-                            } 
+                            }
                         }).catch(error => {
-                            setErrorSnack({open:true, content:'글 등록은 로그인 후 이용해주세요 :) '});
+                            setErrorSnack({open:true, content:'재 로그인 후 다시 시도해주세요 :) '});
                         })
                     }
                 } else {
-                    setErrorSnack({open:true, content:'글 등록은 로그인 후 이용해주세요 :) '});
+                    setErrorSnack({open:true, content:'재 로그인 후 다시 시도해주세요 :) '});
                 }
             }
         }
