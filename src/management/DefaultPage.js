@@ -40,10 +40,7 @@ const defaultData = {
       { title: 'Surname', field: 'Surname' },
       { title: 'Birth Year', field: 'Birth Year' },
       { title: 'Phone' , field:'Phone', grouping:false},
-      {
-        title: 'Gender',
-        field: 'Gender',
-      },
+      { title: 'Gender', field: 'Gender', grouping:true },
       { title: 'Memo' , field:'Memo'}
     ],
     data : [

@@ -71,6 +71,7 @@ export default function App() {
             setProfile(cookies.profile);
         }
     },[cookies.profile]);
+    
     return (
         <React.Fragment>
             <ErrorBoundary

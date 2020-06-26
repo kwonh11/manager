@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
         backgroundColor : 'inherit'
     },
     textPaper : {
-        minWidth : 350,
+        minWidth : 400,
         width : '70vw',
         alignSelf : 'center',
         justifyContent : 'center',
@@ -38,7 +38,6 @@ export default function Introduction () {
     const [stepper, setStepper] = React.useState(0);
     const classes = useStyles();
     const domRef = React.useRef();
-    console.log(`currentSlide : ${currentSlide}`)
     React.useEffect(() => {
       const observer = new IntersectionObserver(entries => {
         entries.forEach(entry => setGrow(entry.isIntersecting));
