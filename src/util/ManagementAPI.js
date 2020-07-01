@@ -7,7 +7,9 @@ export const getManagementTable =  () => {
         withCredentials:true
     }));
 }
-
+export const awakeServer = () => {
+    return (axios.get(`${serverURL}/awake`));
+}
 export const saveHeaders = (headers, groupings) => {
     console.log(`saving headers : 
     headers : ${JSON.stringify(headers)}

@@ -3,7 +3,7 @@ import { Typography, Box } from "@material-ui/core";
 import { Fade } from "@material-ui/core";
 import StartButton from "./StartButton";
 import background from "../images/desk.jpg";
-
+import { awakeServer } from "../util/ManagementAPI";
 const useStyles = makeStyles((theme) => ({
     root: {
         display: 'flex',
@@ -23,6 +23,7 @@ export default function Main () {
     const [fade,setFade] = React.useState(false);
     const isFirstRef = React.useRef(true);
     const domRef = React.useRef();
+    if(isFirstRef) awakeServer().then(res => console.log(res.status));
 
     React.useEffect(() => {
         const observer = new IntersectionObserver(entries => {

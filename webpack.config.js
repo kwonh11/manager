@@ -29,7 +29,7 @@ module.exports = {
                 },
             }
         },
-        minimize : true
+        minimize : process.env.production? true : false
     },
     devtool: 'inline-source-map',
     devServer : {
