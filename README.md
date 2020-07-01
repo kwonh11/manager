@@ -1,6 +1,6 @@
 
 # [Management-app](https://devhyuk.com) (데이터관리 프로그램, 스프레드시트)
-[MANAGEMENT APP ](https://devhyuk.com)
+[MANAGEMENT APP 바로가기](https://devhyuk.com)
 
 # 목차
 
@@ -22,7 +22,7 @@
  - **배포**
      - 프론트엔드
      - 백엔드
- - **개발후기** : 블로그
+ - **개발후기** : [블로그](https://velog.io/@kwonh/%EA%B0%9C%EB%B0%9C%ED%9B%84%EA%B8%B0-%EB%8D%B0%EC%9D%B4%ED%84%B0%ED%85%8C%EC%9D%B4%EB%B8%94-%EA%B4%80%EB%A6%AC-%EC%95%B1-React-Hook-Material-ui-Material-table-axios-NodeJS-express-AWS)
 
 ## 소개
  - 나만의 데이터테이블을 만들고 관리할 수 있는 웹입니다.
